@@ -1,6 +1,6 @@
 # explore-dat
 
-Explore and download contents a dat in the browser.
+Explore and download a [dat link](http://github.com/maxogden/dat) in the browser.
 
 ## TODO
 
