@@ -1,6 +1,6 @@
 var Ractive = require('ractive')
 var fs = require('fs')
-var xhr = require('xhr')
+var Dat = require('dat-browserify')
 
 var tree = require('./components/tree-view.js')
 
@@ -13,19 +13,14 @@ module.exports = function (el, link) {
     onrender: function () {
       var self = this
       self.set('loading', true)
-      metadata(link, function (err, resp, entries) {
+      var db = Dat({
+        signalhub: ['exploredat', ['https://signalhub.mafintosh.com']]
+      })
+      db.metadata(link, function (err, entries) {
         if (err) throw err
         self.set('loading', false)
         tree(entries, document.getElementById('file-list'))
       })
     }
   })
-}
-
-function metadata (link, cb) {
-  var options = {
-    uri: '/metadata?link=' + link,
-    json: true
-  }
-  xhr(options, cb)
 }
