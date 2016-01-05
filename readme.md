@@ -6,7 +6,7 @@ Explore and download a [dat link](http://github.com/maxogden/dat) in the browser
 
 - [ ] have a big download button
 - [ ] selective file or folder download
-- [ ] display metadata in file list
+- [ ] display metadata (like last modified, size) in file list
 - [ ] handle sub-directories
 
 ## Install
