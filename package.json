@@ -17,8 +17,8 @@
   },
   "dependencies": {
     "brfs": "^1.4.2",
+    "file-browser-widget": "^1.0.5",
     "ractive": "^0.7.3",
-    "tree-view": "^2.2.0",
     "xhr": "^2.2.0"
   }
 }

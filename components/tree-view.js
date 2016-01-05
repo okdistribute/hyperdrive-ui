@@ -1,4 +1,4 @@
-var tree = require('tree-view')
+var tree = require('file-browser-widget')
 
 module.exports = function (entries, el) {
   var browser = tree()
@@ -7,7 +7,9 @@ module.exports = function (entries, el) {
     console.log(entry)
     children.push({
       type: entry.type,
-      path: entry.value.name
+      path: entry.value.name,
+      size: entry.value.size,
+      mtime: entry.value.mtime
     })
   })
   browser.directory('/', children)
