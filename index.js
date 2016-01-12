@@ -22,6 +22,7 @@ module.exports = function (el, link) {
         self.set('loading', false)
         var browser = tree(entries, document.getElementById('file-list'))
         browser.on('entry', function (entry) {
+          if (entry.type !== 'file') return
           var file = {
             name: entry.path,
             length: entry.size,
@@ -33,6 +34,7 @@ module.exports = function (el, link) {
             $display.style.display = 'block'
             $overlay.style.display = 'block'
             elem.onclick = clearMedia
+            $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
           })
         })
       })
