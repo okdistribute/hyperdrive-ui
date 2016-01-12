@@ -13,6 +13,9 @@ module.exports = function (el, link) {
     data: { link: link },
     onrender: function () {
       var self = this
+      var $display = document.querySelector('#display')
+      var $overlay = document.querySelector('#overlay')
+
       self.set('loading', true)
       requests.metadata(link, function (err, resp, entries) {
         if (err) throw err
@@ -24,13 +27,22 @@ module.exports = function (el, link) {
             length: entry.size,
             createReadStream: function () { return requests.data(link, entry.entry) }
           }
-          var $display = document.querySelector('#display')
+          clearMedia()
           data.render(file, $display, function (err, elem) {
             if (err) throw err
             $display.style.display = 'block'
+            $overlay.style.display = 'block'
+            elem.onclick = clearMedia
           })
         })
       })
+
+      var clearMedia = function () {
+        $display.style.display = 'none'
+        $overlay.style.display = 'none'
+        $display.innerHTML = ''
+      }
+      self.on('clearMedia', clearMedia)
     }
   })
 }

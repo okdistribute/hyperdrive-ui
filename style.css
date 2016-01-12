@@ -3,15 +3,29 @@ body { margin: 0; padding 0; }
   display: none;
   position: absolute;
   top: 0;
+  background-color: black;
   height: 100%;
   width: 100%;
-  padding: 10px;
-  background-color: black;
 }
 
 #display img,
-#display iframe,
 #display video {
+  padding: 10px;
   max-width: 95%;
   max-height: 95%;
+}
+
+#display iframe {
+  padding: 10px;
+  width: 95%;
+  height: 95%;
+}
+
+#overlay {
+  display: none;
+  position: absolute;
+  top:0;
+  left: 0;
+  right: 0;
+  bottom:0;
 }
