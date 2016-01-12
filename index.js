@@ -1,7 +1,8 @@
 var Ractive = require('ractive')
 var fs = require('fs')
-var xhr = require('xhr')
+var data = require('render-data')
 
+var requests = require('./requests')
 var tree = require('./components/tree-view.js')
 
 module.exports = function (el, link) {
@@ -13,19 +14,23 @@ module.exports = function (el, link) {
     onrender: function () {
       var self = this
       self.set('loading', true)
-      metadata(link, function (err, resp, entries) {
+      requests.metadata(link, function (err, resp, entries) {
         if (err) throw err
         self.set('loading', false)
-        tree(entries, document.getElementById('file-list'))
+        var browser = tree(entries, document.getElementById('file-list'))
+        browser.on('entry', function (entry) {
+          var file = {
+            name: entry.path,
+            length: entry.size,
+            createReadStream: function () { return requests.data(link, entry.entry) }
+          }
+          var $display = document.querySelector('#display')
+          data.render(file, $display, function (err, elem) {
+            if (err) throw err
+            $display.style.display = 'block'
+          })
+        })
       })
     }
   })
-}
-
-function metadata (link, cb) {
-  var options = {
-    uri: '/metadata?link=' + link,
-    json: true
-  }
-  xhr(options, cb)
 }

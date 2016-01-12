@@ -1,0 +1,17 @@
+body { margin: 0; padding 0; }
+#display {
+  display: none;
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+  background-color: black;
+}
+
+#display img,
+#display iframe,
+#display video {
+  max-width: 95%;
+  max-height: 95%;
+}

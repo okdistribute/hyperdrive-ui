@@ -4,7 +4,7 @@
   "description": "Explore and download a dat in the browser.",
   "main": "index.js",
   "scripts": {
-    "build": "browserify app.js -o bundle.js -t brfs",
+    "build": "browserify -r got app.js -o bundle.js -t brfs",
     "watch": "watchify app.js -o bundle.js -t brfs",
     "serve": "node cli.js",
     "start": "npm run serve & npm run watch"
@@ -12,13 +12,17 @@
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^12.0.1",
-    "watchify": "^3.6.1"
+    "browserify": "^13.0.0",
+    "watchify": "^3.7.0"
   },
   "dependencies": {
+    "body": "^5.1.0",
     "brfs": "^1.4.2",
     "file-browser-widget": "^1.0.5",
+    "pump": "^1.0.1",
     "ractive": "^0.7.3",
+    "render-data": "^1.0.0",
+    "request": "^2.67.0",
     "xhr": "^2.2.0"
   }
 }
