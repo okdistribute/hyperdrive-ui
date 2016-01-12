@@ -1,7 +1,7 @@
 {
   "name": "dat-explorer",
   "version": "1.0.0",
-  "description": "Explore and download a dat in the browser.",
+  "description": "Explore the contents of a dat in the browser.",
   "main": "index.js",
   "scripts": {
     "build": "browserify -r got app.js -o bundle.js -t brfs",
@@ -24,5 +24,12 @@
     "render-data": "^1.0.0",
     "request": "^2.67.0",
     "xhr": "^2.2.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/karissa/dat-explorer.git"
+  },
+  "bugs": {
+    "url": "https://github.com/karissa/dat-explorer/issues"
   }
 }
