@@ -13,6 +13,7 @@ module.exports = function (el, link) {
     data: { link: link },
     onrender: function () {
       var self = this
+      self.set('hash', link.replace('dat://', '').replace('dat:', ''))
       var $display = document.querySelector('#display')
       var $overlay = document.querySelector('#overlay')
 

@@ -22,6 +22,7 @@
     "pump": "^1.0.1",
     "ractive": "^0.7.3",
     "render-data": "^1.0.0",
+    "dat": "git+https://github.com/maxogden/dat.git",
     "request": "^2.67.0",
     "xhr": "^2.2.0"
   },
