@@ -16,13 +16,14 @@
     "watchify": "^3.7.0"
   },
   "dependencies": {
+    "archive-dat": "^1.0.0",
     "body": "^5.1.0",
     "brfs": "^1.4.2",
+    "dat": "git+https://github.com/maxogden/dat.git",
     "file-browser-widget": "^1.0.5",
     "pump": "^1.0.1",
     "ractive": "^0.7.3",
     "render-data": "^1.0.0",
-    "dat": "git+https://github.com/maxogden/dat.git",
     "request": "^2.67.0",
     "xhr": "^2.2.0"
   },
