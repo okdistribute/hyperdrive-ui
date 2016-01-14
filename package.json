@@ -18,6 +18,7 @@
   "dependencies": {
     "brfs": "^1.4.2",
     "file-browser-widget": "^1.0.5",
+    "file-tree-browser-widget": "^1.0.0",
     "ractive": "^0.7.3",
     "xhr": "^2.2.0"
   }

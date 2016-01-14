@@ -16,7 +16,7 @@ module.exports = function (el, link) {
       metadata(link, function (err, resp, entries) {
         if (err) throw err
         self.set('loading', false)
-        tree(entries, document.getElementById('file-list'))
+	tree(entries, document.getElementById('file-list'), el)
       })
     }
   })

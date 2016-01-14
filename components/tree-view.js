@@ -1,7 +1,6 @@
-var tree = require('file-browser-widget')
+var tree = require('file-tree-browser-widget')
 
 module.exports = function (entries, el) {
-  var browser = tree()
   var children = []
   entries.forEach(function (entry) {
     console.log(entry)
@@ -12,7 +11,5 @@ module.exports = function (entries, el) {
       mtime: entry.value.mtime
     })
   })
-  browser.directory('/', children)
-  browser.appendTo(el)
-  return browser
+  tree('/', children, el)
 }
