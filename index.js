@@ -21,18 +21,10 @@ module.exports = function (el, link) {
       requests.metadata(link, function (err, resp, entries) {
         if (err) throw err
         self.set('loading', false)
-        createTree('/', entries)
-      })
-      
-      var createTree = function (dir, entries) {
         var fileList = document.getElementById('file-list')
-        fileList.innerHTML = ''
-        var browser = tree(dir, entries, fileList)
+        var browser = tree('/', entries, fileList)
         browser.on('entry', function (entry) {
-          console.log('got', entry)
-          if (entry.type === 'directory') {
-            browser = createTree(entry.path, entries)
-          } else {
+          if (entry.type === 'file') {
             var file = {
               name: entry.path,
               length: entry.size,
@@ -48,7 +40,7 @@ module.exports = function (el, link) {
             })
           }
         })
-      }
+      })
 
       var clearMedia = function () {
         $display.style.display = 'none'
