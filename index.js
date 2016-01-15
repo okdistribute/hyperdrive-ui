@@ -20,28 +20,35 @@ module.exports = function (el, link) {
       self.set('loading', true)
       requests.metadata(link, function (err, resp, entries) {
         if (err) throw err
-          self.set('loading', false)
-          var browser = tree("/", entries, document.getElementById('file-list'))
-          browser.on('entry', function (entry) {
-	    if (entry.type === 'directory') {
-		browser = tree(entry.path, entries, el)
-	    } else { // entry.type === 'file'
-		var file = { 
-		    name: entry.path,
-		    length: entry.size,
-		    createReadStream: function () { return requests.data(link, entry.entry) }
-		}
-		clearMedia()
-		data.render(file, $display, function (err, elem) {
-		    if (err) throw err
-		    $display.style.display = 'block'
-		    $overlay.style.display = 'block'
-		    elem.onclick = clearMedia
-		    $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
-		})
-            }
-        })
+        self.set('loading', false)
+        createTree('/', entries)
       })
+      
+      var createTree = function (dir, entries) {
+        var fileList = document.getElementById('file-list')
+        fileList.innerHTML = ''
+        var browser = tree(dir, entries, fileList)
+        browser.on('entry', function (entry) {
+          console.log('got', entry)
+          if (entry.type === 'directory') {
+            browser = createTree(entry.path, entries)
+          } else {
+            var file = {
+              name: entry.path,
+              length: entry.size,
+              createReadStream: function () { return requests.data(link, entry.entry) }
+            }
+            clearMedia()
+            data.render(file, $display, function (err, elem) {
+              if (err) throw err
+              $display.style.display = 'block'
+              $overlay.style.display = 'block'
+              elem.onclick = clearMedia
+              $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
+            })
+          }
+        })
+      }
 
       var clearMedia = function () {
         $display.style.display = 'none'

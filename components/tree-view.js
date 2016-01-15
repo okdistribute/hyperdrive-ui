@@ -12,6 +12,5 @@ module.exports = function (root, entries, el) {
     }
     children.push(node)
   })
-  el.innerHTML = ''
   return tree(root, children, el)
 }

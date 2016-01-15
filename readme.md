@@ -8,7 +8,7 @@ Explore the contents of a [dat link](http://github.com/maxogden/dat) in the brow
 - [x] have a big download button
 - [ ] selective file or folder download
 - [x] display metadata (like last modified, size) in file list
-- [ ] handle sub-directories
+- [x] handle sub-directories
 
 ## Example
 
