@@ -22,6 +22,7 @@
     "dat": "git+https://github.com/maxogden/dat.git",
     "file-browser-widget": "^1.0.5",
     "pump": "^1.0.1",
+    "file-tree-browser-widget": "^1.0.0",
     "ractive": "^0.7.3",
     "render-data": "^1.0.0",
     "request": "^2.67.0",

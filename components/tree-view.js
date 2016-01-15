@@ -1,4 +1,4 @@
-var tree = require('file-browser-widget')
+var tree = require('file-tree-browser-widget')
 
 module.exports = function (entries, el) {
   var browser = tree({ cwd: '/' })
@@ -13,7 +13,5 @@ module.exports = function (entries, el) {
     }
     children.push(node)
   })
-  browser.directory('/', children)
-  browser.appendTo(el)
-  return browser
+  tree('/', children, el)
 }
