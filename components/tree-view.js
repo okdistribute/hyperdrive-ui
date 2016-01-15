@@ -5,7 +5,7 @@ module.exports = function (root, entries, el) {
   entries.forEach(function (entry) {
     var node = {
       type: entry.type,
-      path: entry.value.name,
+      path: '/' + entry.value.name,
       size: entry.value.size,
       mtime: entry.value.mtime,
       entry: entry
