@@ -20,23 +20,26 @@ module.exports = function (el, link) {
       self.set('loading', true)
       requests.metadata(link, function (err, resp, entries) {
         if (err) throw err
-        self.set('loading', false)
-        var browser = tree(entries, document.getElementById('file-list'))
-        browser.on('entry', function (entry) {
-          if (entry.type !== 'file') return
-          var file = {
-            name: entry.path,
-            length: entry.size,
-            createReadStream: function () { return requests.data(link, entry.entry) }
-          }
-          clearMedia()
-          data.render(file, $display, function (err, elem) {
-            if (err) throw err
-            $display.style.display = 'block'
-            $overlay.style.display = 'block'
-            elem.onclick = clearMedia
-            $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
-          })
+          self.set('loading', false)
+          var browser = tree("/", entries, document.getElementById('file-list'))
+          browser.on('entry', function (entry) {
+	    if (entry.type === 'directory') {
+		browser = tree(entry.path, entries, el)
+	    } else { // entry.type === 'file'
+		var file = { 
+		    name: entry.path,
+		    length: entry.size,
+		    createReadStream: function () { return requests.data(link, entry.entry) }
+		}
+		clearMedia()
+		data.render(file, $display, function (err, elem) {
+		    if (err) throw err
+		    $display.style.display = 'block'
+		    $overlay.style.display = 'block'
+		    elem.onclick = clearMedia
+		    $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
+		})
+            }
         })
       })
 
