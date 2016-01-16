@@ -20,7 +20,9 @@ module.exports = function (el, link) {
       var feed = Feed(link)
       var entries = []
       var stream = feed.createStream()
+      self.set('loading', true)
       stream.on('data', function (entry) {
+        self.set('loading', false)
         entries.push(entry)
         var browser = tree('/', entries, document.getElementById('file-list'))
 

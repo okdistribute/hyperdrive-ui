@@ -1,3 +1,7 @@
+{{#if loading}}
+<h1>....fetching {{link}}...</h1>
+{{else}}
 <div id="file-list"></div>
+{{/if}}
 <div id="display"></div>
 <div id="overlay" on-click="clearMedia"></div>
