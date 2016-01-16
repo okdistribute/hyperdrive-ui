@@ -4,7 +4,7 @@ Explore the contents of a [dat link](http://github.com/maxogden/dat) in the brow
 
 ## TODO
 
-- [ ] work entirely in the browser
+- [x] work entirely in the browser
 - [x] have a big download button
 - [ ] selective file or folder download
 - [x] display metadata (like last modified, size) in file list
