@@ -2,7 +2,7 @@ var Ractive = require('ractive')
 var fs = require('fs')
 var data = require('render-data')
 
-var Feed = require('./requests')
+var Feed = require('./feed.js')
 var tree = require('./components/tree-view.js')
 
 module.exports = function (el, link) {
