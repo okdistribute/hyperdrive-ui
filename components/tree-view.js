@@ -9,19 +9,18 @@ module.exports = function (root, entries, el) {
       path: '/' + entry.value.name,
       size: entry.value.size,
       mtime: entry.value.mtime,
-      entry: entry
+      data: entry
     }
     children.push(node)
   })
-  return createTree(root, entries)
+  return createTree(root, children, el)
 }
 
 function createTree (root, children, el) {
   var browser = tree(root, children, el)
   browser.on('entry', function (entry) {
-    console.log('got', entry)
     if (entry.type === 'directory') {
-      browser = createTree(entry.path, children)
+      browser = createTree(entry.path, children, el)
     }
   })
   return browser

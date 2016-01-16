@@ -2,33 +2,36 @@ var Ractive = require('ractive')
 var fs = require('fs')
 var data = require('render-data')
 
-var requests = require('./requests')
+var Feed = require('./requests')
 var tree = require('./components/tree-view.js')
 
 module.exports = function (el, link) {
   if (typeof el === 'string') el = document.querySelector(el)
+  link = link.replace('dat://', '').replace('dat:', '')
   Ractive({
     el: el,
     template: fs.readFileSync('./dat.html').toString(),
     data: { link: link },
     onrender: function () {
       var self = this
-      self.set('hash', link.replace('dat://', '').replace('dat:', ''))
       var $display = document.querySelector('#display')
       var $overlay = document.querySelector('#overlay')
 
-      self.set('loading', true)
-      requests.metadata(link, function (err, resp, entries) {
-        if (err) throw err
-        self.set('loading', false)
-        var fileList = document.getElementById('file-list')
-        var browser = tree('/', entries, fileList)
+      var feed = Feed(link)
+      var entries = []
+      var stream = feed.createStream()
+      stream.on('data', function (entry) {
+        entries.push(entry)
+        var browser = tree('/', entries, document.getElementById('file-list'))
+
         browser.on('entry', function (entry) {
           if (entry.type === 'file') {
             var file = {
               name: entry.path,
               length: entry.size,
-              createReadStream: function () { return requests.data(link, entry.entry) }
+              createReadStream: function (opts) {
+                return feed.getFile(entry.data).createStream(opts)
+              }
             }
             clearMedia()
             data.render(file, $display, function (err, elem) {

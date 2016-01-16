@@ -4,10 +4,8 @@
   "description": "Explore the contents of a dat in the browser.",
   "main": "index.js",
   "scripts": {
-    "build": "browserify -r got app.js -o bundle.js -t brfs",
-    "watch": "watchify app.js -o bundle.js -t brfs",
-    "serve": "node cli.js",
-    "start": "npm run serve & npm run watch"
+    "serve": "beefy app.js:bundle.js -- -t brfs",
+    "start": "npm run serve" 
   },
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
@@ -17,16 +15,12 @@
   },
   "dependencies": {
     "archive-dat": "^1.0.0",
-    "body": "^5.1.0",
     "brfs": "^1.4.2",
     "dat": "git+https://github.com/maxogden/dat.git",
-    "file-browser-widget": "^1.0.5",
     "pump": "^1.0.1",
     "file-tree-browser-widget": "^1.0.0",
     "ractive": "^0.7.3",
-    "render-data": "^1.0.0",
-    "request": "^2.67.0",
-    "xhr": "^2.2.0"
+    "render-data": "^1.0.0"
   },
   "repository": {
     "type": "git",

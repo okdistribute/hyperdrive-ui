@@ -1,24 +1,18 @@
-var xhr = require('xhr')
-var request = require('request')
+var Dat = require('dat-browserify')
 
-module.exports = {
-  metadata: metadata,
-  data: data
+module.exports = Feed
+
+function Feed (link) {
+  if (!(this instanceof Feed)) return new Feed(link)
+  this.db = Dat()
+  this.db.joinWebrtcSwarm(link)
+  this.feed = this.db.drive.get(link)
 }
 
-function data (link, entry) {
-  var opts = {
-    method: 'POST',
-    baseUrl: window.location.origin,
-    body: JSON.stringify({link: link, entry: entry})
-  }
-  return request('/data', opts)
+Feed.prototype.getFile = function (entry) {
+  return this.db.drive.get(entry)
 }
 
-function metadata (link, cb) {
-  var options = {
-    uri: '/metadata?link=' + link,
-    json: true
-  }
-  xhr(options, cb)
+Feed.prototype.createStream = function (opts) {
+  return this.feed.createStream(opts)
 }
