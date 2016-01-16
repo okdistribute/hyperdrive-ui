@@ -4,6 +4,7 @@
   "description": "Explore the contents of a dat in the browser.",
   "main": "index.js",
   "scripts": {
+    "build": "browserify -t brfs app.js -o bundle.js",
     "serve": "beefy app.js:bundle.js -- -t brfs",
     "start": "npm run serve" 
   },
