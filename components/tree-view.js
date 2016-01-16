@@ -1,7 +1,6 @@
 var tree = require('file-tree-browser-widget')
 
 module.exports = function (root, entries, el) {
-  el.innerHTML = ''
   var children = []
   entries.forEach(function (entry) {
     var node = {
@@ -17,6 +16,7 @@ module.exports = function (root, entries, el) {
 }
 
 function createTree (root, children, el) {
+  el.innerHTML = ''
   var browser = tree(root, children, el)
   browser.on('entry', function (entry) {
     if (entry.type === 'directory') {
