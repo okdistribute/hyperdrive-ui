@@ -28,21 +28,23 @@ module.exports = function (el, link) {
 
         browser.on('entry', function (entry) {
           if (entry.type === 'file') {
-            var file = {
-              name: entry.path,
-              length: entry.size,
-              createReadStream: function (opts) {
-                return feed.getFile(entry.data).createStream(opts)
+            if (entry.size !== 0) {
+              var file = {
+                name: entry.path,
+                length: entry.size,
+                createReadStream: function (opts) {
+                  return feed.getFile(entry.data).createStream(opts)
+                }
               }
+              clearMedia()
+              data.render(file, $display, function (err, elem) {
+                if (err) throw err
+                $display.style.display = 'block'
+                $overlay.style.display = 'block'
+                elem.onclick = clearMedia
+                $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
+              })
             }
-            clearMedia()
-            data.render(file, $display, function (err, elem) {
-              if (err) throw err
-              $display.style.display = 'block'
-              $overlay.style.display = 'block'
-              elem.onclick = clearMedia
-              $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
-            })
           }
         })
       })
