@@ -13,7 +13,8 @@
   "license": "MIT",
   "devDependencies": {
     "browserify": "^13.0.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "beefy": "^2.1.5"
   },
   "dependencies": {
     "archive-dat": "^1.0.0",
