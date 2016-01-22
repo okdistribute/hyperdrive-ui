@@ -12,8 +12,8 @@
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^13.0.0",
-    "watchify": "^3.7.0",
+    "browserify": "^12.0.0",
+    "watchify": "~3.6.0",
     "beefy": "^2.1.5"
   },
   "dependencies": {
