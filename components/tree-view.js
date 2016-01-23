@@ -13,24 +13,6 @@ module.exports = function (root, entries, el, cbDisplayFile) {
     }
     children.push(node)
   })
-  return createTree(root, children, el, cbDisplayFile)
+  return tree(root, children, el, cbDisplayFile)
 }
 
-function createTree (root, children, el, cbDisplayFile) {
-  noError = null
-  el.innerHTML = ''
-  var browser = tree(root, children, el)
-
-  browser.on('entry', function (entry) {
-    display(entry)
-
-    function display (entry) {
-      if (entry.type === 'directory') {
-        browser = createTree(entry.path, children, el, cbDisplayFile)
-        browser.on('entry', function (entry) { display(entry) })
-      } else { // entry.type === 'file'
-        cbDisplayFile(noError, entry)
-      }
-    }
-  })
-}
