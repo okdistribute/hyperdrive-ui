@@ -8,6 +8,7 @@ var tree = require('./components/tree-view.js')
 module.exports = function (el, link) {
   if (typeof el === 'string') el = document.querySelector(el)
   link = link.replace('dat://', '').replace('dat:', '')
+
   Ractive({
     el: el,
     template: fs.readFileSync('./dat.html').toString(),
@@ -21,7 +22,18 @@ module.exports = function (el, link) {
       var entries = []
       var stream = feed.createStream()
       self.set('loading', true)
+
+      var timeOut = setTimeout(function (errorMsg) {
+        self.set('loading', false)
+        $display.style.display = 'block'
+        $overlay.style.display = 'block'
+        $overlay.innerHTML = '<h1>' + errorMsg + '</h1>'
+        $overlay.onclick = clearMedia
+        $overlay.style['color'] = 'red'
+      }, 1000, "timed out: check the dat's host")
+
       stream.on('data', function (entry) {
+        clearTimeout(timeOut)
         self.set('loading', false)
         entries.push(entry)
         var browser = tree('/', entries, document.getElementById('file-list'))
