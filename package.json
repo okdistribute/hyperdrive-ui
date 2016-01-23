@@ -4,7 +4,7 @@
   "description": "Explore the contents of a dat in the browser.",
   "main": "index.js",
   "scripts": {
-    "build": "browserify -t brfs app.js -o bundle.js",
+    "build": "standard && browserify -t brfs app.js -o bundle.js",
     "serve": "beefy app.js:bundle.js -- -t brfs",
     "start": "npm run serve",
     "deploy": "gh-pages-deploy"
@@ -12,6 +12,7 @@
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
   "devDependencies": {
+    "standard": "^3.0.0",
     "browserify": "^12.0.0",
     "watchify": "~3.6.0",
     "beefy": "^2.1.5"
