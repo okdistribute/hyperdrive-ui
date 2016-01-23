@@ -21,7 +21,7 @@
     "archive-dat": "^1.0.0",
     "brfs": "^1.4.2",
     "dat-browserify": "^1.1.0",
-    "file-tree-browser-widget": "^1.0.0",
+    "file-tree-browser-widget": "^1.1.0",
     "gh-pages-deploy": "^0.4.0",
     "pump": "^1.0.1",
     "ractive": "^0.7.3",
