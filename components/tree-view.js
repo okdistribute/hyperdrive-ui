@@ -18,10 +18,5 @@ module.exports = function (root, entries, el) {
 function createTree (root, children, el) {
   el.innerHTML = ''
   var browser = tree(root, children, el)
-  browser.on('entry', function (entry) {
-    if (entry.type === 'directory') {
-      browser = createTree(entry.path, children, el)
-    }
-  })
   return browser
 }

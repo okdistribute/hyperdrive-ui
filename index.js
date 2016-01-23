@@ -27,7 +27,22 @@ module.exports = function (el, link) {
         var browser = tree('/', entries, document.getElementById('file-list'))
 
         browser.on('entry', function (entry) {
-          if (entry.type === 'file') {
+          display(entry)
+
+          function display (entry) {
+            if (entry.type === 'file') {
+              displayFile(entry)
+            } else { // entry.type === 'directory'
+              displayDirectory(entry)
+            }
+          }
+
+          function displayDirectory (entry) {
+            browser = tree(entry.path, entries, document.getElementById('file-list'))
+            browser.on('entry', function (entry) { display(entry) })
+          }
+
+          function displayFile (entry) {
             if (entry.size !== 0) {
               var file = {
                 name: entry.path,
