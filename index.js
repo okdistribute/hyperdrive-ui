@@ -55,6 +55,7 @@ module.exports = function (el, link) {
                      return feed.getFile(entry.data).createStream(opts)
                    }
                  }
+                 clearMedia()
                  data.render(file, $display, function (err, elem) {
                    if (err) return err
                    $display.style.display = 'block'
