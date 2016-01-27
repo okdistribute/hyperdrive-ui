@@ -26,10 +26,9 @@ module.exports = function (el, link) {
       var timeOut = setTimeout(function (errorMsg) {
         self.set('loading', false)
         $display.style.display = 'block'
-        $overlay.style.display = 'block'
-        $overlay.innerHTML = '<h1>' + errorMsg + '</h1>'
-        $overlay.onclick = clearMedia
-        $overlay.style['color'] = 'red'
+        $display.innerHTML = '<h1>' + errorMsg + '</h1>'
+        $display.onclick = clearMedia
+        $display.style['color'] = 'red'
       }, 2000, "timed out: check the dat's host")
 
       var clearMedia = function () {
@@ -59,7 +58,6 @@ module.exports = function (el, link) {
                  data.render(file, $display, function (err, elem) {
                    if (err) return err
                    $display.style.display = 'block'
-                   $overlay.style.display = 'block'
                    elem.onclick = clearMedia
                    $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
                  })
