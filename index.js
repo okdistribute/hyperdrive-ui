@@ -1,8 +1,8 @@
 var Ractive = require('ractive')
+var Dat = require('dat-browserify')
 var fs = require('fs')
 var data = require('render-data')
 
-var Feed = require('./feed.js')
 var tree = require('./components/tree-view.js')
 
 module.exports = function (el, link) {
@@ -17,54 +17,63 @@ module.exports = function (el, link) {
       var self = this
       var $display = document.querySelector('#display')
       var $overlay = document.querySelector('#overlay')
+      var db = Dat()
+      var swarm = db.joinWebrtcSwarm(link)
 
-      var feed = Feed(link)
+      swarm.on('peer', function (peer) {
+        console.log('get', peer)
+      })
+
+      var archive = db.drive.get(link, '.')
+
       var entries = []
-      var stream = feed.createStream()
+      var entryStream = archive.createEntryStream()
       self.set('loading', true)
+      console.log('created entry stream')
 
-      var timeOut = setTimeout(function (errorMsg) {
+      entryStream.on('data', function (entry) {
+        console.log('got', entry)
+        // clearTimeout(timeOut)
         self.set('loading', false)
-        $display.style.display = 'block'
-        $display.innerHTML = '<h1>' + errorMsg + '</h1>'
-        $display.onclick = clearMedia
-        $display.style['color'] = 'red'
-      }, 2000, "timed out: check the dat's host")
+        entries.push(entry)
+
+        tree('/', entries, document.getElementById('file-list'),
+           function (err, entry) { // how to display files
+             if (err) return err
+             self.set('loading', false)
+             if (entry.size !== 0) {
+               var file = {
+                 name: entry.path,
+                 length: entry.size,
+                 createReadStream: function (opts) {
+                   return archive.getFileStream(entry.data)
+                 }
+               }
+               clearMedia()
+               data.render(file, $display, function (err, elem) {
+                 if (err) return err
+                 $display.style.display = 'block'
+                 elem.onclick = clearMedia
+                 $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
+               })
+             }
+           })
+        self.on('clearMedia', clearMedia)
+      })
+      //
+      // var timeOut = setTimeout(function (errorMsg) {
+      //   self.set('loading', false)
+      //   $display.style.display = 'block'
+      //   $display.innerHTML = '<h1>' + errorMsg + '</h1>'
+      //   $display.onclick = clearMedia
+      //   $display.style['color'] = 'red'
+      // }, 20000, "timed out: check the dat's host")
 
       var clearMedia = function () {
         $display.style.display = 'none'
         $overlay.style.display = 'none'
         $display.innerHTML = ''
       }
-
-      stream.on('data', function (entry) {
-        clearTimeout(timeOut)
-        self.set('loading', false)
-        entries.push(entry)
-
-        tree('/', entries, document.getElementById('file-list'),
-             function (err, entry) { // how to display files
-               if (err) return err
-               self.set('loading', false)
-               if (entry.size !== 0) {
-                 var file = {
-                   name: entry.path,
-                   length: entry.size,
-                   createReadStream: function (opts) {
-                     return feed.getFile(entry.data).createStream(opts)
-                   }
-                 }
-                 clearMedia()
-                 data.render(file, $display, function (err, elem) {
-                   if (err) return err
-                   $display.style.display = 'block'
-                   elem.onclick = clearMedia
-                   $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
-                 })
-               }
-             })
-        self.on('clearMedia', clearMedia)
-      })
     }
   })
 }
