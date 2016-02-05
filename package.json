@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "standard; browserify -t brfs app.js -o bundle.js",
-    "serve": "beefy app.js:bundle.js -- -t brfs",
+    "serve": "wzrd app.js:bundle.js -- -t brfs",
     "start": "npm run serve",
     "deploy": "gh-pages-deploy"
   },
@@ -15,11 +15,11 @@
     "standard": "^3.0.0",
     "browserify": "^12.0.0",
     "watchify": "~3.6.0",
-    "beefy": "^2.1.5"
+    "brfs": "^1.4.3",
+    "wzrd": "^1.3.1"
   },
   "dependencies": {
     "archive-dat": "^1.0.0",
-    "brfs": "^1.4.2",
     "dat-browserify": "^1.1.0",
     "file-tree-browser-widget": "^1.1.0",
     "gh-pages-deploy": "^0.4.0",
