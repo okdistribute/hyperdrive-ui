@@ -1,8 +1,8 @@
 var Ractive = require('ractive')
-var Dat = require('dat-browserify')
 var fs = require('fs')
 var data = require('render-data')
 
+var Dat = require('dat-browserify')
 var tree = require('./components/tree-view.js')
 
 module.exports = function (el, link) {
@@ -18,13 +18,13 @@ module.exports = function (el, link) {
       var $display = document.querySelector('#display')
       var $overlay = document.querySelector('#overlay')
       var db = Dat()
-      var swarm = db.joinWebrtcSwarm(link)
+      var swarm = db.join(link)
 
       swarm.on('peer', function (peer) {
         console.log('get', peer)
       })
 
-      var archive = db.drive.get(link, '.')
+      var archive = db.drive.get(new Buffer(link, 'hex'), '.')
 
       var entries = []
       var entryStream = archive.createEntryStream()
