@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "archive-dat": "^1.0.0",
-    "dat-browserify": "^1.1.0",
+    "dat-browserify": "^1.2.0",
     "file-tree-browser-widget": "^1.1.0",
     "gh-pages-deploy": "^0.4.0",
     "pump": "^1.0.1",
