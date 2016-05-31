@@ -1,4 +1,5 @@
 var yo = require('yo-yo')
+var path = require('path')
 var data = require('render-data')
 var treeWidget = require('file-tree-browser-widget')
 var swarm = require('./hyperdrive-browser.js')
@@ -19,6 +20,7 @@ module.exports = function (el, archive) {
   swarm(archive, {key: 'hyperdrive-explorer'})
 
   var entries = []
+  var dirs = {}
 
   var $display = el.querySelector('#display')
   var $overlay = el.querySelector('#overlay')
@@ -27,8 +29,19 @@ module.exports = function (el, archive) {
   archive.list({live: true}).on('data', function (entry) {
     console.log('adding', entry)
     entries.push(entry)
+    var dir = path.dirname(entry.name)
+    if (!dirs[dir]) {
+      entries.push({
+        type: 'directory',
+        name: dir,
+        length: 0
+      })
+      dirs[dir] = true
+    }
 
-    tree('/', entries, $files, function (err, entry) {
+    var root = '/'
+
+    tree(root, entries, $files, function (err, entry) {
       if (err) return err
       clearMedia()
       if (entry.length !== 0) {
@@ -42,7 +55,6 @@ module.exports = function (el, archive) {
         }
         data.render(file, $display, function (err, elem) {
           if (err) return err
-          console.log('element', elem)
           $display.style.display = 'block'
           $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
         })
@@ -51,7 +63,6 @@ module.exports = function (el, archive) {
   })
 
   var clearMedia = function () {
-    console.log('clearing')
     $display.style.display = 'none'
     $overlay.style.display = 'none'
     $display.innerHTML = ''
