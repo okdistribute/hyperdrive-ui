@@ -1,79 +1,76 @@
-var Ractive = require('ractive')
-var fs = require('fs')
+var yo = require('yo-yo')
 var data = require('render-data')
+var treeWidget = require('file-tree-browser-widget')
+var swarm = require('./hyperdrive-browser.js')
 
-var Dat = require('dat-browserify')
-var tree = require('./components/tree-view.js')
-
-module.exports = function (el, link) {
+module.exports = function (el, archive) {
   if (typeof el === 'string') el = document.querySelector(el)
-  link = link.replace('dat://', '').replace('dat:', '')
+  el.innerHTML = ''
 
-  Ractive({
-    el: el,
-    template: fs.readFileSync('./dat.html').toString(),
-    data: { link: link },
-    onrender: function () {
-      var self = this
-      var $display = document.querySelector('#display')
-      var $overlay = document.querySelector('#overlay')
-      var db = Dat()
-      var swarm = db.join(link)
+  var explorer = yo`
+  <div id="hyperdrive">
+    <div id="overlay" onclick="${clearMedia}">
+    <div id="file-list"></div>
+    </div>
+    <div id="display" onclick="${clearMedia}"></div>
+  </div>
+  `
+  el.appendChild(explorer)
+  swarm(archive, {key: 'hyperdrive-explorer'})
 
-      swarm.on('peer', function (peer) {
-        console.log('get', peer)
-      })
+  var entries = []
 
-      var archive = db.drive.get(new Buffer(link, 'hex'), '.')
+  var $display = el.querySelector('#display')
+  var $overlay = el.querySelector('#overlay')
+  var $files = el.querySelector('#file-list')
 
-      var entries = []
-      var entryStream = archive.createEntryStream()
-      self.set('loading', true)
-      console.log('created entry stream')
+  archive.list({live: true}).on('data', function (entry) {
+    console.log('adding', entry)
+    entries.push(entry)
 
-      entryStream.on('data', function (entry) {
-        console.log('got', entry)
-        // clearTimeout(timeOut)
-        self.set('loading', false)
-        entries.push(entry)
-
-        tree('/', entries, document.getElementById('file-list'),
-           function (err, entry) { // how to display files
-             if (err) return err
-             self.set('loading', false)
-             if (entry.size !== 0) {
-               var file = {
-                 name: entry.path,
-                 length: entry.size,
-                 createReadStream: function (opts) {
-                   return archive.getFileStream(entry.data)
-                 }
-               }
-               clearMedia()
-               data.render(file, $display, function (err, elem) {
-                 if (err) return err
-                 $display.style.display = 'block'
-                 elem.onclick = clearMedia
-                 $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
-               })
-             }
-           })
-        self.on('clearMedia', clearMedia)
-      })
-      //
-      // var timeOut = setTimeout(function (errorMsg) {
-      //   self.set('loading', false)
-      //   $display.style.display = 'block'
-      //   $display.innerHTML = '<h1>' + errorMsg + '</h1>'
-      //   $display.onclick = clearMedia
-      //   $display.style['color'] = 'red'
-      // }, 20000, "timed out: check the dat's host")
-
-      var clearMedia = function () {
-        $display.style.display = 'none'
-        $overlay.style.display = 'none'
-        $display.innerHTML = ''
+    tree('/', entries, $files, function (err, entry) {
+      if (err) return err
+      clearMedia()
+      if (entry.length !== 0) {
+        var file = {
+          name: entry.path,
+          length: entry.length,
+          createReadStream: function (opts) {
+            console.log('reading file')
+            return archive.createFileReadStream(entry.data)
+          }
+        }
+        data.render(file, $display, function (err, elem) {
+          if (err) return err
+          console.log('element', elem)
+          $display.style.display = 'block'
+          $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
+        })
       }
-    }
+    })
   })
+
+  var clearMedia = function () {
+    console.log('clearing')
+    $display.style.display = 'none'
+    $overlay.style.display = 'none'
+    $display.innerHTML = ''
+  }
+}
+
+function tree (root, entries, el, cbDisplayFile) {
+  var children = []
+  // data wrangling
+  entries.forEach(function (entry) {
+    var node = {
+      type: entry.type,
+      path: entry.name,
+      size: entry.length,
+      mtime: entry.mtime,
+      data: entry
+    }
+    console.log(node)
+    children.push(node)
+  })
+  return treeWidget(root, children, el, cbDisplayFile)
 }
