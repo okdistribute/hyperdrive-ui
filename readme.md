@@ -2,6 +2,8 @@
 
 Explore the contents of a [hyperdrive](http://github.com/mafintosh/hyperdrive) in the browser.
 
+Live demo: [http://karissa.github.io/hyperdrive-ui/](http://karissa.github.io/hyperdrive-ui/)
+
 ## TODO
 
 - [ ] put swarm code outside of hyperdrive-ui to let dev decide on swarm
