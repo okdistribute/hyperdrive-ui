@@ -40,9 +40,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/karissa/dat-explorer.git"
+    "url": "git://github.com/karissa/hyperdrive-ui.git"
   },
   "bugs": {
-    "url": "https://github.com/karissa/dat-explorer/issues"
+    "url": "https://github.com/karissa/hyperdrive-ui/issues"
   }
 }
