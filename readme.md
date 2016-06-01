@@ -20,14 +20,8 @@ npm start
 
 ```npm install dat-explorer```
 
-## `explorer(element, link, onclick)`
+## `explorer(element, archive, opts, onclick)`
 
-Renders the explorer given an HTML DOM element and a `dat://` link.
-
-```js
-var explorer = require('dat-explorer')
-var link = 'dat://ea18e8fe42b1c344d8bfcdf6449d61f5228767ef8b5e9155768bba436245af84'
-explorer('#dat', link)
-```
+Renders the explorer. 
 
 See `app.js` for an example.

@@ -23,7 +23,7 @@
     "wzrd": "^1.3.1",
     "memdb": "^1.3.1",
     "hyperdrive": "^5.2.0",
-    "level-browserify": "^1.1.0",
+    "level-browserify": "^1.1.0"
   },
   "dependencies": {
     "file-tree-browser-widget": "^1.1.0",
