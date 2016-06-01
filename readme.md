@@ -18,9 +18,9 @@ npm start
 
 ## usage
 
-```npm install dat-explorer```
+```npm install hyperdrive-ui```
 
-## `explorer(element, archive, opts, onclick)`
+## `hyperdriveUI(element, archive, opts, onclick)`
 
 Renders the explorer. 
 
