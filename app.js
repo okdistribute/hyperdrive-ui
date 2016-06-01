@@ -1,9 +1,10 @@
 var hyperdrive = require('hyperdrive')
-var memdb = require('memdb')
+var data = require('render-data')
+var level = require('level-browserify')
 var drop = require('drag-drop')
 var fileReader = require('filereader-stream')
 var choppa = require('choppa')
-var db = memdb()
+var db = level('./hyperdrive')
 var drive = hyperdrive(db)
 var explorer = require('./')
 
