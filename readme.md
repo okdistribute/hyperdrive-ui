@@ -4,6 +4,7 @@ Explore the contents of a [hyperdrive](http://github.com/mafintosh/hyperdrive) i
 
 ## TODO
 
+- [ ] put swarm code outside of hyperdrive-ui to let dev decide on swarm
 - [ ] download button
 - [ ] ui work
 - [ ] selective file or folder download
@@ -22,6 +23,6 @@ npm start
 
 ## `hyperdriveUI(element, archive, opts, onclick)`
 
-Renders the explorer. 
+Renders the explorer.
 
 See `app.js` for an example.
