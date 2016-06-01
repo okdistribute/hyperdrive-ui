@@ -1,30 +1,18 @@
 var yo = require('yo-yo')
 var path = require('path')
-var data = require('render-data')
 var treeWidget = require('file-tree-browser-widget')
 var swarm = require('./hyperdrive-browser.js')
 
-module.exports = function (el, archive) {
+module.exports = function (el, archive, onclick) {
   if (typeof el === 'string') el = document.querySelector(el)
   el.innerHTML = ''
 
-  var explorer = yo`
-  <div id="hyperdrive">
-    <div id="overlay" onclick="${clearMedia}">
-    <div id="file-list"></div>
-    </div>
-    <div id="display" onclick="${clearMedia}"></div>
-  </div>
-  `
+  var explorer = yo`<div id="hyperdrive"></div>`
   el.appendChild(explorer)
-  swarm(archive, {key: 'hyperdrive-explorer'})
+  var sw = swarm(archive, {key: 'hyperdrive-explorer'})
 
   var entries = []
   var dirs = {}
-
-  var $display = el.querySelector('#display')
-  var $overlay = el.querySelector('#overlay')
-  var $files = el.querySelector('#file-list')
 
   archive.list({live: true}).on('data', function (entry) {
     entries.push(entry)
@@ -40,32 +28,20 @@ module.exports = function (el, archive) {
 
     var root = '/'
 
-    tree(root, entries, $files, function (err, entry) {
-      if (err) return err
-      clearMedia()
-      if (entry.length !== 0) {
-        var file = {
-          name: entry.path,
-          length: entry.length,
-          createReadStream: function (opts) {
-            return archive.createFileReadStream(entry.data)
-          }
+    tree(root, entries, el.querySelector('#hyperdrive'), function (err, entry) {
+      if (err) return onclick(err)
+      var file = {
+        name: entry.path,
+        length: entry.length,
+        entry: entry.data,
+        createReadStream: function (opts) {
+          return archive.createFileReadStream(entry.data)
         }
-        data.render(file, $display, function (err, elem) {
-          if (err) return err
-          $display.style.display = 'block'
-          $display.onclick = clearMedia
-          $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
-        })
       }
+      onclick(null, file)
     })
   })
-
-  var clearMedia = function () {
-    $display.style.display = 'none'
-    $overlay.style.display = 'none'
-    $display.innerHTML = ''
-  }
+  return sw
 }
 
 function tree (root, entries, el, cbDisplayFile) {

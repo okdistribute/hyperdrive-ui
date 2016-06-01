@@ -22,7 +22,18 @@ function main (key) {
 
   archive = drive.createArchive(key, {live: true})
   window.location = '#' + archive.key.toString('hex')
-  explorer('#dat', archive)
+  var sw = explorer('#dat', archive, onclick)
+  sw.on('peer', function () { help.innerHTML = '' })
+  archive.list().on('data', function () { help.innerHTML = '' })
+}
+
+function onclick (err, file) {
+  if (err) throw err
+  var $display = document.querySelector('#display')
+  $display.innerHTML = ''
+  data.render(file, $display, function (err, elem) {
+    if (err) return err
+  })
 }
 
 drop(document.body, function (files) {
