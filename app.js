@@ -1,5 +1,6 @@
 var hyperdrive = require('hyperdrive')
 var data = require('render-data')
+var concat = require('concat-stream')
 var level = require('level-browserify')
 var drop = require('drag-drop')
 var fileReader = require('filereader-stream')
@@ -11,19 +12,26 @@ var explorer = require('./')
 var $display = document.querySelector('#display')
 var $hyperdrive = document.querySelector('#ui')
 
-var archive
 var url = window.location.toString()
 var key = url.split('#')[1]
-main(key)
+var archive = drive.createArchive(key, {live: true})
 
+var file
+if (key) file = key.split('/').splice(1).join('/')
+if (!file) main(key)
+else {
+  archive.createFileReadStream(file).pipe(concat(function (data) {
+    document.write(data)
+  }))
+}
 var button = document.querySelector('#new')
 button.onclick = function () { main(null) }
 
 function main (key) {
   $hyperdrive.innerHTML = ''
   clear()
-  archive = drive.createArchive(key, {live: true})
 
+  archive = drive.createArchive(key, {live: true})
   var help = document.querySelector('#help-text')
   if (key && !archive.owner) help.innerHTML = 'looking for peers...'
   else if (archive.owner) help.innerHTML = 'drag and drop files'
