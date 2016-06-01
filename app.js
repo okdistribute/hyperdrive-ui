@@ -20,6 +20,7 @@ var button = document.querySelector('#new')
 button.onclick = function () { main(null) }
 
 function main (key) {
+  $hyperdrive.innerHTML = ''
   var help = document.querySelector('#help-text')
   if (key) help.innerHTML = 'looking for peers...'
   else help.innerHTML = 'drag and drop files'
@@ -37,16 +38,16 @@ function onclick (err, file) {
   data.render(file, $display, function (err, elem) {
     if (err) return err
   })
+}
 
-  function clear () {
-    $display.innerHTML = ''
-    $hyperdrive.innerHTML = ''
-  }
+function clear () {
+  $display.innerHTML = ''
 }
 
 drop(document.body, function (files) {
   var i = 0
   loop()
+  clear()
 
   function loop () {
     if (i === files.length) return console.log('added files', files)
