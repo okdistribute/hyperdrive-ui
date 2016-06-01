@@ -1,9 +1,10 @@
-# hyperdrive-explorer
+# hyperdrive-ui
 
-Explore the contents of a [hypedrive](http://github.com/mafintosh/hyperdrive) in the browser.
+Explore the contents of a [hyperdrive](http://github.com/mafintosh/hyperdrive) in the browser.
 
 ## TODO
 
+- [ ] download button
 - [ ] ui work
 - [ ] selective file or folder download
 
