@@ -8,6 +8,9 @@ var db = level('./hyperdrive')
 var drive = hyperdrive(db)
 var explorer = require('./')
 
+var $display = document.querySelector('#display')
+var $hyperdrive = document.querySelector('#ui')
+
 var archive
 var url = window.location.toString()
 var key = url.split('#')[1]
@@ -23,18 +26,22 @@ function main (key) {
 
   archive = drive.createArchive(key, {live: true})
   window.location = '#' + archive.key.toString('hex')
-  var sw = explorer('#dat', archive, onclick)
+  var sw = explorer($hyperdrive, archive, onclick)
   sw.on('peer', function () { help.innerHTML = '' })
   archive.list().on('data', function () { help.innerHTML = '' })
 }
 
 function onclick (err, file) {
   if (err) throw err
-  var $display = document.querySelector('#display')
-  $display.innerHTML = ''
+  clear()
   data.render(file, $display, function (err, elem) {
     if (err) return err
   })
+
+  function clear () {
+    $display.innerHTML = ''
+    $hyperdrive.innerHTML = ''
+  }
 }
 
 drop(document.body, function (files) {
