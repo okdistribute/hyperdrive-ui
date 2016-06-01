@@ -1,7 +1,7 @@
 {
-  "name": "dat-explorer",
-  "version": "1.1.0",
-  "description": "Explore the contents of a dat in the browser.",
+  "name": "hyperdrive-ui",
+  "version": "1.0.0",
+  "description": "Render a hyperdrive in the browser.",
   "main": "index.js",
   "scripts": {
     "build": "browserify app.js > bundle.js",
@@ -20,14 +20,13 @@
     "gh-pages-deploy": "^0.4.2",
     "standard": "^3.0.0",
     "watchify": "~3.6.0",
-    "wzrd": "^1.3.1"
+    "wzrd": "^1.3.1",
+    "memdb": "^1.3.1",
+    "hyperdrive": "^5.2.0",
+    "level-browserify": "^1.1.0",
   },
   "dependencies": {
     "file-tree-browser-widget": "^1.1.0",
-    "hyperdrive": "^5.2.0",
-    "level-browserify": "^1.1.0",
-    "memdb": "^1.3.1",
-    "ractive": "^0.7.3",
     "render-data": "^1.0.0",
     "signalhub": "^4.4.0",
     "webrtc-swarm": "^2.4.0",

@@ -3,13 +3,14 @@ var path = require('path')
 var treeWidget = require('file-tree-browser-widget')
 var swarm = require('./hyperdrive-browser.js')
 
-module.exports = function (el, archive, onclick) {
+module.exports = function ui (el, archive, opts, onclick) {
+  if ((typeof opts) === 'function') return ui(el, archive, {}, opts)
   if (typeof el === 'string') el = document.querySelector(el)
   el.innerHTML = ''
 
   var explorer = yo`<div id="hyperdrive"></div>`
   el.appendChild(explorer)
-  var sw = swarm(archive, {key: 'hyperdrive-explorer'})
+  var sw = swarm(archive, opts)
 
   var entries = []
   var dirs = {}
