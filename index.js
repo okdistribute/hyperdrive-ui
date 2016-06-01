@@ -31,7 +31,9 @@ module.exports = function ui (el, archive, opts, onclick) {
 
     var root = '/'
 
-    tree(root, entries, el.querySelector('#hyperdrive'), function (err, entry) {
+    tree(root, entries, el.querySelector('#hyperdrive'), itemClick)
+
+    function itemClick (err, entry) {
       if (err) return onclick(err)
       var file = {
         name: entry.path,
@@ -42,7 +44,7 @@ module.exports = function ui (el, archive, opts, onclick) {
         }
       }
       onclick(null, file)
-    })
+    }
   })
   return sw
 }
