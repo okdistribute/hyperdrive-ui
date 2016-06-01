@@ -4,6 +4,7 @@ var signalhub = require('signalhub')
 var DEFAULT_SIGNALHUB = 'https://signalhub.mafintosh.com'
 
 module.exports = function join (archive, opts) {
+  if (!opts) opts = {}
   if (!opts.key || !opts.signalhub) {
     opts.key = 'hyperdrive-public'
     console.warn('Using default signalhub and key. For better stability, use your own.')

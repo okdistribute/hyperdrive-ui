@@ -1,18 +1,10 @@
 var yo = require('yo-yo')
 var path = require('path')
 var treeWidget = require('file-tree-browser-widget')
-var swarm = require('./hyperdrive-browser.js')
 
-module.exports = function ui (el, archive, opts, onclick) {
-  if ((typeof opts) === 'function') return ui(el, archive, {}, opts)
-  if (typeof el === 'string') el = document.querySelector(el)
-  el.innerHTML = ''
-
+module.exports = function ui (archive, opts, onclick) {
+  if ((typeof opts) === 'function') return ui(archive, {}, opts)
   var explorer = yo`<div id="hyperdrive"></div>`
-  el.appendChild(explorer)
-
-  // TODO: creating the swarm should probably be out of this repo
-  var sw = swarm(archive, opts)
 
   var entries = []
   var dirs = {}
@@ -31,7 +23,7 @@ module.exports = function ui (el, archive, opts, onclick) {
 
     var root = '/'
 
-    tree(root, entries, el.querySelector('#hyperdrive'), itemClick)
+    tree(root, entries, explorer, itemClick)
 
     function itemClick (err, entry) {
       if (err) return onclick(err)
@@ -46,7 +38,7 @@ module.exports = function ui (el, archive, opts, onclick) {
       onclick(null, file)
     }
   })
-  return sw
+  return explorer
 }
 
 function tree (root, entries, el, cbDisplayFile) {

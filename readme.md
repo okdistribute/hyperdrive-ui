@@ -5,8 +5,6 @@ Explore the contents of a [hyperdrive](http://github.com/mafintosh/hyperdrive) i
 Live demo: [http://karissa.github.io/hyperdrive-ui/](http://karissa.github.io/hyperdrive-ui/)
 
 ## TODO
-
-- [ ] put swarm code outside of hyperdrive-ui to let dev decide on swarm
 - [ ] download button
 - [ ] design
 - [ ] render websites
