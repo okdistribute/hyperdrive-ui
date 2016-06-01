@@ -6,7 +6,9 @@ Explore the contents of a [hyperdrive](http://github.com/mafintosh/hyperdrive) i
 
 - [ ] put swarm code outside of hyperdrive-ui to let dev decide on swarm
 - [ ] download button
-- [ ] ui work
+- [ ] design
+- [ ] render websites
+- [ ] allow #hash/path/to/data.txt to automatically display
 - [ ] selective file or folder download
 
 ## Example
