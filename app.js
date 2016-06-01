@@ -21,11 +21,12 @@ button.onclick = function () { main(null) }
 
 function main (key) {
   $hyperdrive.innerHTML = ''
+  archive = drive.createArchive(key, {live: true})
+
   var help = document.querySelector('#help-text')
-  if (key) help.innerHTML = 'looking for peers...'
+  if (key && !archive.owner) help.innerHTML = 'looking for peers...'
   else help.innerHTML = 'drag and drop files'
 
-  archive = drive.createArchive(key, {live: true})
   window.location = '#' + archive.key.toString('hex')
   var sw = explorer($hyperdrive, archive, onclick)
   sw.on('peer', function () { help.innerHTML = '' })

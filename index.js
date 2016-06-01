@@ -10,6 +10,8 @@ module.exports = function ui (el, archive, opts, onclick) {
 
   var explorer = yo`<div id="hyperdrive"></div>`
   el.appendChild(explorer)
+
+  // TODO: creating the swarm should probably be out of this repo
   var sw = swarm(archive, opts)
 
   var entries = []
