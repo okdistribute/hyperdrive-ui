@@ -34,6 +34,14 @@ body { margin: 0; padding 0; }
   width: 100%;
 }
 
+.hidden {
+  display: none;
+}
+
+.visible {
+  display: block;
+}
+
 #file-list, h1 {
   position: relative;
   top: 1.5em;

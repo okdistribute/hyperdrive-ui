@@ -27,7 +27,6 @@ module.exports = function (el, archive) {
   var $files = el.querySelector('#file-list')
 
   archive.list({live: true}).on('data', function (entry) {
-    console.log('adding', entry)
     entries.push(entry)
     var dir = path.dirname(entry.name)
     if (!dirs[dir]) {
@@ -49,13 +48,13 @@ module.exports = function (el, archive) {
           name: entry.path,
           length: entry.length,
           createReadStream: function (opts) {
-            console.log('reading file')
             return archive.createFileReadStream(entry.data)
           }
         }
         data.render(file, $display, function (err, elem) {
           if (err) return err
           $display.style.display = 'block'
+          $display.onclick = clearMedia
           $display.style['background-color'] = elem.tagName === 'IFRAME' ? 'white' : 'black'
         })
       }
@@ -80,7 +79,6 @@ function tree (root, entries, el, cbDisplayFile) {
       mtime: entry.mtime,
       data: entry
     }
-    console.log(node)
     children.push(node)
   })
   return treeWidget(root, children, el, cbDisplayFile)
