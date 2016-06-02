@@ -27,6 +27,7 @@
   },
   "dependencies": {
     "file-tree-browser-widget": "^1.1.0",
+    "hyperdrive-archive-swarm": "^1.0.1",
     "render-data": "^1.0.0",
     "signalhub": "^4.4.0",
     "webrtc-swarm": "^2.4.0",
