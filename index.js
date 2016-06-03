@@ -1,4 +1,5 @@
 var path = require('path')
+var data = require('render-data')
 var tree = require('yo-fs')
 
 module.exports = function ui (archive, opts, onclick) {
@@ -10,20 +11,25 @@ module.exports = function ui (archive, opts, onclick) {
   var root = opts.root || '/'
   var dirs = {}
 
+  var widget = tree(null, root, entries, clickEntry)
+
   function clickEntry (ev, entry) {
     if (entry.type === 'directory') root = entry.name
+    if (entry.type === 'file') {
+      data.append({
+        name: entry.name,
+        createReadStream: function () {
+          return archive.createFileReadStream(entry)
+        }
+      }, widget, function (err) {
+        console.log('hello', err)
+      })
+    }
     onclick(ev, entry)
   }
 
-  var widget = tree(null, root, entries, clickEntry)
   var stream = archive.list({live: true})
   stream.on('data', function (entry) {
-    if (entry.type === 'file') {
-      entry.createReadStream = function () {
-        console.log(entry)
-        return archive.createFileReadStream(entry)
-      }
-    }
     entries.push(entry)
     var dir = path.dirname(entry.name)
     if (!dirs[dir]) {
