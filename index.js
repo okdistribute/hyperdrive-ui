@@ -7,8 +7,13 @@ module.exports = function ui (archive, opts, onclick) {
   if (!opts) opts = {}
 
   var entries = []
+  var root = opts.root || '/'
   var dirs = {}
-  var widget = tree(null, opts.root || '/', entries, onclick)
+  function clickEntry (ev, entry) {
+    if (entry.type === 'directory') root = entry.name
+    onclick(ev, entry)
+  }
+  var widget = tree(null, root, entries, clickEntry)
   var stream = archive.list({live: true})
   stream.on('data', function (entry) {
     if (entry.type === 'file') entry.createReadStream = archive.createFileReadStream(entry.data)
@@ -22,7 +27,7 @@ module.exports = function ui (archive, opts, onclick) {
       })
       dirs[dir] = true
     }
-    tree(widget, opts.root || '/', entries, onclick)
+    tree(widget, root, entries, clickEntry)
   })
   return widget
 }
