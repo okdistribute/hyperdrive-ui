@@ -15,12 +15,16 @@ var $hyperdrive = document.querySelector('#ui')
 
 var url = window.location.toString()
 var key = url.split('#')[1]
+console.log('opening', key)
 var archive = drive.createArchive(key, {live: true})
+console.log('success')
 swarm(archive)
+
 var file
 if (key) file = key.split('/').splice(1).join('/')
 if (!file) main(key)
 else {
+  console.log('file', file)
   archive.createFileReadStream(file).pipe(concat(function (data) {
     document.write(data)
   }))
@@ -32,16 +36,24 @@ function main (key) {
   $hyperdrive.innerHTML = ''
   clear()
 
+  console.log('opening', key)
   archive = drive.createArchive(key, {live: true})
   swarm(archive)
+  console.log('success')
   var help = document.querySelector('#help-text')
   if (key && !archive.owner) help.innerHTML = 'looking for peers...'
   else if (archive.owner) help.innerHTML = 'drag and drop files'
 
   window.location = '#' + archive.key.toString('hex')
-  var el = explorer(archive, onclick)
-  $hyperdrive.appendChild(el)
-  archive.list().on('data', function () {
+  var tree = explorer(archive, onclick)
+  $hyperdrive.appendChild(tree)
+  console.log('listing')
+  var stream = archive.list()
+  stream.on('error', function (err) {
+    console.trace(err)
+  })
+  stream.on('data', function (entry) {
+    console.log('got', entry)
     if (archive.owner) help.innerHTML = 'drag and drop files'
     else help.innerHTML = ''
   })
