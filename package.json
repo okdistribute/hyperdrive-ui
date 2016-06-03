@@ -30,8 +30,7 @@
     "hyperdrive-archive-swarm": "^1.0.1",
     "render-data": "^1.0.0",
     "signalhub": "^4.4.0",
-    "webrtc-swarm": "^2.4.0",
-    "yo-yo": "^1.2.1"
+    "webrtc-swarm": "^2.4.0"
   },
   "gh-pages-deploy": {
     "prep": [

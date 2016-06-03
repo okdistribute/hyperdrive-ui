@@ -1,6 +1,5 @@
-var yo = require('yo-yo')
 var path = require('path')
-var tree = require('./lib/tree.js')
+var tree = require('yo-fs')
 
 module.exports = function ui (archive, opts, onclick) {
   if (!onclick) return ui(archive, opts, function thunk () {})
@@ -9,16 +8,10 @@ module.exports = function ui (archive, opts, onclick) {
 
   var entries = []
   var dirs = {}
-
-  function itemClick (err, entry) {
-    if (err) return onclick(err)
-    console.log('creating read stream')
-    entry.createReadStream = archive.createFileReadStream(entry.data)
-    onclick(null, entry)
-  }
-  var widget = tree(opts.root || '/', entries, itemClick)
-  var stream = archive.list()
+  var widget = tree(null, opts.root || '/', entries, onclick)
+  var stream = archive.list({live: true})
   stream.on('data', function (entry) {
+    if (entry.type === 'file') entry.createReadStream = archive.createFileReadStream(entry.data)
     entries.push(entry)
     var dir = path.dirname(entry.name)
     if (!dirs[dir]) {
@@ -29,8 +22,7 @@ module.exports = function ui (archive, opts, onclick) {
       })
       dirs[dir] = true
     }
-    var fresh = tree(opts.root || '/', entries, itemClick)
-    yo.update(widget, fresh)
+    tree(widget, opts.root || '/', entries, onclick)
   })
   return widget
 }

@@ -1,12 +1,11 @@
 var hyperdrive = require('hyperdrive')
-var data = require('render-data')
 var concat = require('concat-stream')
 var level = require('level-browserify')
 var drop = require('drag-drop')
 var fileReader = require('filereader-stream')
 var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
-var db = level('./hyperdrive')
+var db = level('./hyperdrive6')
 var drive = hyperdrive(db)
 var explorer = require('./')
 
@@ -24,7 +23,6 @@ var file
 if (key) file = key.split('/').splice(1).join('/')
 if (!file) main(key)
 else {
-  console.log('file', file)
   archive.createFileReadStream(file).pipe(concat(function (data) {
     document.write(data)
   }))
@@ -34,47 +32,29 @@ button.onclick = function () { main(null) }
 
 function main (key) {
   $hyperdrive.innerHTML = ''
-  clear()
 
-  console.log('opening', key)
   archive = drive.createArchive(key, {live: true})
   swarm(archive)
-  console.log('success')
   var help = document.querySelector('#help-text')
   if (key && !archive.owner) help.innerHTML = 'looking for peers...'
   else if (archive.owner) help.innerHTML = 'drag and drop files'
 
   window.location = '#' + archive.key.toString('hex')
-  var tree = explorer(archive, onclick)
-  $hyperdrive.appendChild(tree)
-  console.log('listing')
-  var stream = archive.list()
+  var widget = explorer(archive)
+  $hyperdrive.appendChild(widget)
+  var stream = archive.list({live: true})
   stream.on('error', function (err) {
     console.trace(err)
   })
   stream.on('data', function (entry) {
-    console.log('got', entry)
     if (archive.owner) help.innerHTML = 'drag and drop files'
     else help.innerHTML = ''
   })
 }
 
-function onclick (err, file) {
-  if (err) throw err
-  clear()
-  data.render(file, $display, function (err, elem) {
-    if (err) return err
-  })
-}
-
-function clear () {
-  $display.innerHTML = ''
-}
-
 drop(document.body, function (files) {
   var i = 0
   loop()
-  clear()
 
   function loop () {
     if (i === files.length) return console.log('added files', files)
