@@ -19,23 +19,35 @@ module.exports = function ui (archive, opts, onclick) {
     ${fs}
   </div>`
 
+  function page (root) {
+    yofs(fs, root, entries, clickEntry)
+  }
+
   function breadcrumbs (root) {
-    return yo`<div id="breadcrumbs">${root}</div>`
+    var parts = root.split('/')
+    while (parts[parts.length - 1] === '') {
+      parts.pop()
+    }
+    var crumbs
+    if (parts.length) crumbs = yo`<button onclick=${function () { page('/')} }>back</button>`
+    return yo`<div id="breadcrumbs">
+      ${crumbs}
+    </div>`
   }
 
   function clickEntry (ev, entry) {
-    if (entry.type === 'directory') root = entry.name
+    root = entry.name
+    yo.update(bc, breadcrumbs(root))
     if (entry.type === 'file') {
       data.render({
         name: entry.name,
         createReadStream: function () {
           return archive.createFileReadStream(entry)
         }
-      }, widget, function (err) {
+      }, fs, function (err) {
         console.log('hello', err)
       })
     }
-    yo.update(bc, breadcrumbs(root))
     onclick(ev, entry)
   }
 
