@@ -1,17 +1,27 @@
 var path = require('path')
+var yo = require('yo-yo')
 var data = require('render-data')
-var tree = require('yo-fs')
+var yofs = require('yo-fs')
 
 module.exports = function ui (archive, opts, onclick) {
   if (!onclick) return ui(archive, opts, function thunk () {})
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
-
-  var entries = []
   var root = opts.root || '/'
+  var entries = []
   var dirs = {}
 
-  var widget = tree(null, root, entries, clickEntry)
+  var fs = yofs(null, root, entries, clickEntry)
+  var bc = breadcrumbs(root)
+
+  var widget = yo`<div id="hyperdrive-ui">
+    ${bc}
+    ${fs}
+  </div>`
+
+  function breadcrumbs (root) {
+    return yo`<div id="breadcrumbs">${root}</div>`
+  }
 
   function clickEntry (ev, entry) {
     if (entry.type === 'directory') root = entry.name
@@ -25,6 +35,7 @@ module.exports = function ui (archive, opts, onclick) {
         console.log('hello', err)
       })
     }
+    yo.update(bc, breadcrumbs(root))
     onclick(ev, entry)
   }
 
@@ -40,7 +51,7 @@ module.exports = function ui (archive, opts, onclick) {
       })
       dirs[dir] = true
     }
-    tree(widget, root, entries, clickEntry)
+    yofs(fs, root, entries, clickEntry)
   })
   return widget
 }
