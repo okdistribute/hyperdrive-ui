@@ -19,20 +19,18 @@ module.exports = function ui (archive, opts, onclick) {
     ${fs}
   </div>`
 
-  function page (root) {
-    yofs(fs, root, entries, clickEntry)
+  function page (newRoot) {
+    root = newRoot
+    yofs(fs, newRoot, entries, clickEntry)
   }
 
   function breadcrumbs (root) {
     var parts = root.split('/')
-    while (parts[parts.length - 1] === '') {
-      parts.pop()
-    }
+    while (parts[parts.length - 1] === '') { parts.pop() }
+    function back () { page(path.dirname(root)) }
     var crumbs
-    if (parts.length) crumbs = yo`<button onclick=${function () { page('/')} }>back</button>`
-    return yo`<div id="breadcrumbs">
-      ${crumbs}
-    </div>`
+    if (parts.length) crumbs = yo`<button onclick=${back}>back</button>`
+    return yo`<div id="breadcrumbs"> ${crumbs} </div>`
   }
 
   function clickEntry (ev, entry) {
