@@ -1,4 +1,7 @@
-body { margin: 0; padding 0; }
+body {
+  font-family: 'Helvetica Neue', 'Lucida Grande', Arial;
+  margin: 0; padding 0;
+}
 
 #display img,
 #display video {
@@ -17,8 +20,11 @@ body { margin: 0; padding 0; }
   position: absolute;
 }
 
+#hyperdrive-ui {
+  margin: 10px;
+}
+
 #yo-fs {
-  font-family: 'Helvetica Neue', 'Lucida Grande', Arial;
   color: #555;
 }
 

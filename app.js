@@ -10,7 +10,7 @@ var drive = hyperdrive(db)
 var explorer = require('./')
 
 var $display = document.querySelector('#display')
-var $hyperdrive = document.querySelector('#ui')
+var $hyperdrive = document.querySelector('#hyperdrive-ui')
 
 var url = window.location.toString()
 var key = url.split('#')[1]
