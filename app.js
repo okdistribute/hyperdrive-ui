@@ -14,9 +14,7 @@ var $hyperdrive = document.querySelector('#ui')
 
 var url = window.location.toString()
 var key = url.split('#')[1]
-console.log('opening', key)
 var archive = drive.createArchive(key, {live: true})
-console.log('success')
 swarm(archive)
 
 var file
@@ -43,9 +41,6 @@ function main (key) {
   var widget = explorer(archive)
   $hyperdrive.appendChild(widget)
   var stream = archive.list({live: true})
-  stream.on('error', function (err) {
-    console.trace(err)
-  })
   stream.on('data', function (entry) {
     if (archive.owner) help.innerHTML = 'drag and drop files'
     else help.innerHTML = ''
