@@ -16,7 +16,7 @@ module.exports = function ui (archive, opts, onclick) {
   function clickEntry (ev, entry) {
     if (entry.type === 'directory') root = entry.name
     if (entry.type === 'file') {
-      data.append({
+      data.render({
         name: entry.name,
         createReadStream: function () {
           return archive.createFileReadStream(entry)
