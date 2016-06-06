@@ -29,8 +29,8 @@ module.exports = function ui (archive, opts, onclick) {
     while (parts[parts.length - 1] === '') { parts.pop() }
     function back () { page(path.dirname(root)) }
     var crumbs
-    if (parts.length) crumbs = yo`<button onclick=${back}>back</button>`
-    return yo`<div id="breadcrumbs"> ${crumbs} </div>`
+    if (parts.length) crumbs = yo`<button class="link" onclick=${back}>back</button>`
+    return yo`<div id="breadcrumbs" class="breadcrumbs"> ${crumbs} </div>`
   }
 
   function clickEntry (ev, entry) {
