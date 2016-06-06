@@ -11,9 +11,11 @@ var explorer = require('./')
 
 var $display = document.querySelector('#display')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
+var $shareLink = document.getElementById('share-link')
 
 var url = window.location.toString()
 var key = url.split('#')[1]
+updateShareLink()
 var archive = drive.createArchive(key, {live: true})
 swarm(archive)
 
@@ -38,6 +40,7 @@ function main (key) {
   else if (archive.owner) help.innerHTML = 'drag and drop files'
 
   window.location = '#' + archive.key.toString('hex')
+  updateShareLink()
   var widget = explorer(archive)
   $hyperdrive.appendChild(widget)
   var stream = archive.list({live: true})
@@ -45,6 +48,10 @@ function main (key) {
     if (archive.owner) help.innerHTML = 'drag and drop files'
     else help.innerHTML = ''
   })
+}
+
+function updateShareLink () {
+  $shareLink.value = window.location
 }
 
 drop(document.body, function (files) {

@@ -73,6 +73,19 @@ a:hover, a:focus,
   float: left;
 }
 
+.site-header #share-link {
+  display: block;
+  float: left;
+  width: 50%;
+  margin-left: 1rem;
+  padding: 6px 14px;
+  font-size: 18px;
+}
+
+.site-header #share-link:hover {
+  background-color: #f7f7f7;
+}
+
 .site-header button {
   float: right;
 }
