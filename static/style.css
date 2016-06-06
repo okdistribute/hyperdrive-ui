@@ -236,3 +236,19 @@ ul {
   padding: 10px;
   margin: 0;
 }
+
+/* render data */
+table {
+  width: 100%;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+table th,
+table td {
+  text-align: left;
+  padding: 5px 10px;
+  color: #959ba4;
+  background-color: #f4f5f6;
+  min-height: 1.42857143;
+}
