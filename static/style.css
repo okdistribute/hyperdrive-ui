@@ -140,6 +140,10 @@ a:hover, a:focus,
   text-align: center;
 }
 
+#display {
+  margin-bottom: 50px;
+}
+
 #display img,
 #display video {
   padding: 10px;
@@ -241,6 +245,7 @@ ul {
 table {
   width: 100%;
   margin-top: 10px;
+  margin-bottom: 10px;
   font-size: 14px;
 }
 
