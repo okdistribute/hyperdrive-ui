@@ -34,7 +34,7 @@ function main (key) {
   archive = drive.createArchive(key, {live: true})
   swarm(archive)
   var help = document.querySelector('#help-text')
-  if (key && !archive.owner) help.innerHTML = 'looking for peers...'
+  if (key && !archive.owner) help.innerHTML = 'looking for peers …'
   else if (archive.owner) help.innerHTML = 'drag and drop files'
 
   window.location = '#' + archive.key.toString('hex')
