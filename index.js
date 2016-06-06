@@ -12,7 +12,8 @@ module.exports = function ui (archive, opts, onclick) {
   var dirs = {}
 
   var fs = yofs(null, root, entries, clickEntry)
-  var display = yo`<div id="display"></div>`
+  var display_id = 'display'
+  var display = yo`<div id="${display_id}"></div>`
 
   var widget = yo`<div id="hyperdrive-ui">
     ${fs}
@@ -35,6 +36,9 @@ module.exports = function ui (archive, opts, onclick) {
 
   function clickEntry (ev, entry) {
     root = entry.name
+    if (entry.type === 'directory') {
+      document.getElementById(display_id).innerHTML = ''
+    }
     if (entry.type === 'file') {
       data.render({
         name: entry.name,

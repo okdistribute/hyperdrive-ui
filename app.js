@@ -9,7 +9,6 @@ var db = level('./hyperdrive6')
 var drive = hyperdrive(db)
 var explorer = require('./')
 
-var $display = document.querySelector('#display')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
