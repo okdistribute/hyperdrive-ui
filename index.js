@@ -12,11 +12,11 @@ module.exports = function ui (archive, opts, onclick) {
   var dirs = {}
 
   var fs = yofs(null, root, entries, clickEntry)
-  var bc = breadcrumbs(root)
+  var display = yo`<div id="display"></div>`
 
   var widget = yo`<div id="hyperdrive-ui">
-    ${bc}
     ${fs}
+    ${display}
   </div>`
 
   function page (newRoot) {
@@ -35,14 +35,13 @@ module.exports = function ui (archive, opts, onclick) {
 
   function clickEntry (ev, entry) {
     root = entry.name
-    yo.update(bc, breadcrumbs(root))
     if (entry.type === 'file') {
       data.render({
         name: entry.name,
         createReadStream: function () {
           return archive.createFileReadStream(entry)
         }
-      }, fs, function (err) {
+      }, display, function (err) {
         console.log('hello', err)
       })
     }
