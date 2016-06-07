@@ -1,11 +1,11 @@
 var hyperdrive = require('hyperdrive')
 var concat = require('concat-stream')
-var level = require('level-browserify')
+var memdb = require('memdb')
 var drop = require('drag-drop')
 var fileReader = require('filereader-stream')
 var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
-var db = level('./hyperdrive6')
+var db = memdb('./hyperdrive620')
 var drive = hyperdrive(db)
 var explorer = require('./')
 
