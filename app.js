@@ -62,6 +62,7 @@ drop(document.body, function (files) {
 
     var file = files[i++]
     var stream = fileReader(file)
-    stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(file.fullPath)).on('finish', loop)
+    var entry = {name: file.fullPath, mtime: Date.now(), ctime: Date.now()}
+    stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(entry)).on('finish', loop)
   }
 })
