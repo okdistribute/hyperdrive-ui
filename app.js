@@ -7,6 +7,8 @@ var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
 var db = memdb('./hyperdrive620')
 var drive = hyperdrive(db)
+var speedometer = require('speedometer')
+var prettyBytes = require('pretty-bytes')
 var explorer = require('./')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
@@ -91,20 +93,21 @@ function installDropHandler (archive) {
 
 function attachSpeedometer (archive) {
   console.log('attachSpeedometer()')
+  var $els = {
+    upload: document.getElementById('upload-speed'),
+    download: document.getElementById('download-speed')
+  }
+  function update (direction, data) {
+    var speed = prettyBytes(speedometer(data.length))
+    if (speed && $els[direction]) els[direction].innerHTML = speed
+  }
   archive.on('upload', function (data) {
     console.log('on ARCHIVE UPLOAD')
-    debugger;
+    update('upload', data)
   })
-  // archive.content.on('upload', function (index, data) {
-  //   console.log('on ARCHIVE UPLOAD')
-  //   debugger;
-  // })
   archive.on('download', function (data) {
     console.log('on ARCHIVE UPLOAD')
-    debugger;
+    update('download', data)
   })
-  // archive.content.on('download', function (index, data) {
-  //   console.log('on ARCHIVE UPLOAD')
-  //   debugger;
-  // })
 }
+
