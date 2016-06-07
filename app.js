@@ -12,7 +12,9 @@ var explorer = require('./')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
-var [, key, file] = window.location.hash.substr(1).match('([^\/]+)(/?.*)')
+var keypath = window.location.hash.substr(1).match('([^\/]+)(/?.*)')
+var key = keypath ? keypath[1] : null
+var file = keypath ? keypath[2] : null
 
 if (file) {
   getArchive(key, function (archive) {
