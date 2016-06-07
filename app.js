@@ -26,9 +26,18 @@ if (file) {
   main(key)
 }
 
+var peers = 0
+function updatePeers () {
+  document.querySelector('#peers').innerHTML = peers + " peer" + (peers > 1 ? 's' : '')
+}
+
 function getArchive (key, cb) {
   var archive = drive.createArchive(key, {live: true})
-  swarm(archive)
+  var sw = swarm(archive)
+  sw.on('peer', function (peer) {
+    peers++
+    updatePeers()
+  })
   archive.open(function () { cb(archive) })
 }
 
