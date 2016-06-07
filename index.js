@@ -12,7 +12,8 @@ module.exports = function ui (archive, opts, onclick) {
   var dirs = {}
 
   var fs = yofs(null, root, entries, clickEntry)
-  var display = yo`<div id="display"></div>`
+  var display_id = 'display'
+  var display = yo`<div id="${display_id}"></div>`
 
   var widget = yo`<div id="hyperdrive-ui">
     ${fs}
@@ -29,12 +30,15 @@ module.exports = function ui (archive, opts, onclick) {
     while (parts[parts.length - 1] === '') { parts.pop() }
     function back () { page(path.dirname(root)) }
     var crumbs
-    if (parts.length) crumbs = yo`<button onclick=${back}>back</button>`
-    return yo`<div id="breadcrumbs"> ${crumbs} </div>`
+    if (parts.length) crumbs = yo`<button class="link" onclick=${back}>back</button>`
+    return yo`<div id="breadcrumbs" class="breadcrumbs"> ${crumbs} </div>`
   }
 
   function clickEntry (ev, entry) {
     root = entry.name
+    if (entry.type === 'directory') {
+      document.getElementById(display_id).innerHTML = ''
+    }
     if (entry.type === 'file') {
       data.render({
         name: entry.name,
