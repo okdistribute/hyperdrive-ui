@@ -12,40 +12,47 @@ var explorer = require('./')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
-var url = window.location.toString()
-var key = url.split('#')[1]
-updateShareLink()
-var archive = drive.createArchive(key, {live: true})
-swarm(archive)
+var [, key, file] = window.location.hash.substr(1).match('([^\/]+)(/?.*)')
 
-var file
-if (key) file = key.split('/').splice(1).join('/')
-if (!file) main(key)
-else {
-  archive.createFileReadStream(file).pipe(concat(function (data) {
-    document.write(data)
-  }))
+if (file) {
+  getArchive(key, function (archive) {
+    archive.createFileReadStream(file).pipe(concat(function (data) {
+      document.write(data)
+    }))
+  })
+} else {
+  main(key)
 }
-var button = document.querySelector('#new')
-button.onclick = function () { main(null) }
+
+function getArchive (key, cb) {
+  var archive = drive.createArchive(key, {live: true})
+  swarm(archive)
+  archive.open(function () { cb(archive) })
+}
 
 function main (key) {
+  var button = document.querySelector('#new')
+  button.onclick = function () { main(null) }
+
+  var help = document.querySelector('#help-text')
+  help.innerHTML = 'looking for peers …'
   $hyperdrive.innerHTML = ''
 
-  archive = drive.createArchive(key, {live: true})
-  swarm(archive)
-  var help = document.querySelector('#help-text')
-  if (key && !archive.owner) help.innerHTML = 'looking for peers …'
-  else if (archive.owner) help.innerHTML = 'drag and drop files'
+  getArchive(key, function (archive) {
+    if (archive.owner) {
+      help.innerHTML = 'drag and drop files'
+      installDropHandler(archive)
+    }
+    window.location = '#' + archive.key.toString('hex')
+    updateShareLink()
 
-  window.location = '#' + archive.key.toString('hex')
-  updateShareLink()
-  var widget = explorer(archive)
-  $hyperdrive.appendChild(widget)
-  var stream = archive.list({live: true})
-  stream.on('data', function (entry) {
-    if (archive.owner) help.innerHTML = 'drag and drop files'
-    else help.innerHTML = ''
+    var widget = explorer(archive)
+    $hyperdrive.appendChild(widget)
+    var stream = archive.list({live: true})
+    stream.on('data', function (entry) {
+      if (archive.owner) help.innerHTML = 'drag and drop files'
+      else help.innerHTML = ''
+    })
   })
 }
 
@@ -53,15 +60,19 @@ function updateShareLink () {
   $shareLink.value = window.location
 }
 
-drop(document.body, function (files) {
-  var i = 0
-  loop()
+var clearDrop
+function installDropHandler (archive) {
+  if (clearDrop) clearDrop()
+  clearDrop = drop(document.body, function (files) {
+    var i = 0
+    loop()
 
-  function loop () {
-    if (i === files.length) return console.log('added files', files)
+    function loop () {
+      if (i === files.length) return console.log('added files to ', archive.key.toString('hex'), files)
 
-    var file = files[i++]
-    var stream = fileReader(file)
-    stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(file.fullPath)).on('finish', loop)
-  }
-})
+      var file = files[i++]
+      var stream = fileReader(file)
+      stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(file.fullPath)).on('finish', loop)
+    }
+  })
+}
