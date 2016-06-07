@@ -39,6 +39,7 @@ function getArchive (key, cb) {
     updatePeers()
   })
   archive.open(function () { cb(archive) })
+  attachSpeedometer(archive)
 }
 
 function main (key) {
@@ -80,11 +81,30 @@ function installDropHandler (archive) {
 
     function loop () {
       if (i === files.length) return console.log('added files to ', archive.key.toString('hex'), files)
-
       var file = files[i++]
       var stream = fileReader(file)
       var entry = {name: file.fullPath, mtime: Date.now(), ctime: Date.now()}
       stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(entry)).on('finish', loop)
     }
   })
+}
+
+function attachSpeedometer (archive) {
+  console.log('attachSpeedometer()')
+  archive.on('upload', function (data) {
+    console.log('on ARCHIVE UPLOAD')
+    debugger;
+  })
+  // archive.content.on('upload', function (index, data) {
+  //   console.log('on ARCHIVE UPLOAD')
+  //   debugger;
+  // })
+  archive.on('download', function (data) {
+    console.log('on ARCHIVE UPLOAD')
+    debugger;
+  })
+  // archive.content.on('download', function (index, data) {
+  //   console.log('on ARCHIVE UPLOAD')
+  //   debugger;
+  // })
 }
