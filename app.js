@@ -28,7 +28,7 @@ if (file) {
 
 var peers = 0
 function updatePeers () {
-  document.querySelector('#peers').innerHTML = peers + " peer" + (peers > 1 ? 's' : '')
+  document.querySelector('#peers').innerHTML = peers + " source" + (peers > 1 ? 's' : '')
 }
 
 function getArchive (key, cb) {
@@ -46,7 +46,7 @@ function main (key) {
   button.onclick = function () { main(null) }
 
   var help = document.querySelector('#help-text')
-  help.innerHTML = 'looking for peers …'
+  help.innerHTML = 'looking for sources …'
   $hyperdrive.innerHTML = ''
 
   getArchive(key, function (archive) {
