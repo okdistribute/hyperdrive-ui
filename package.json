@@ -19,7 +19,7 @@
     "filereader-stream": "^1.0.0",
     "gh-pages-deploy": "^0.4.2",
     "http-server": "^0.9.0",
-    "hyperdrive": "^6.2.0",
+    "hyperdrive": "^6.2.1",
     "level-browserify": "^1.1.0",
     "memdb": "^1.3.1",
     "standard": "^3.0.0",
