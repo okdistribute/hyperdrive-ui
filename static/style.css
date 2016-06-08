@@ -124,7 +124,7 @@ a:hover, a:focus,
   line-height: 37px;
   margin: 0 10px 0 0px;
   padding: 0;
-  width: 340px;
+  width: 320px;
 }
 
 #speed span {
@@ -132,6 +132,10 @@ a:hover, a:focus,
   font-size: 14px;
   line-height: 37px;
   margin-left: 10px;
+}
+
+#speed span:first-child {
+  margin-left: 0;
 }
 
 .breadcrumbs {
