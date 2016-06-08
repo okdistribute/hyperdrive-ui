@@ -119,11 +119,12 @@ a:hover, a:focus,
 }
 
 #speed {
-  display: inline-block;
+  display: block;
+  float: right;
   line-height: 37px;
-  margin: 0 0 0 10px;
-  padding: 0 0 0 10px;
-  border-left: 1px solid #dfe2e4;
+  margin: 0 10px 0 0px;
+  padding: 0;
+  width: 340px;
 }
 
 #speed span {

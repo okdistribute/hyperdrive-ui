@@ -91,15 +91,18 @@ function installDropHandler (archive) {
 }
 
 function attachSpeedometer (archive) {
-  console.log('attachSpeedometer()')
+  console.log('2 attachSpeedometer()')
+  var speed = speedometer(1)
   var $els = {
     upload: document.getElementById('upload-speed'),
     download: document.getElementById('download-speed')
   }
   function _update (direction, data) {
-    debugger;
-    var speed = prettyBytes(speedometer(data.length))
-    if (speed && $els[direction]) els[direction].innerHTML = speed
+    var bytesPerSecond = speed(data.length)
+    console.log(bytesPerSecond)
+    var pretty = prettyBytes(bytesPerSecond)
+    console.log(pretty)
+    if (pretty && $els[direction]) $els[direction].innerHTML = direction + ' ' + pretty
   }
   function _timeout () {
     // todo
@@ -109,7 +112,7 @@ function attachSpeedometer (archive) {
     _update('upload', data)
   })
   archive.on('download', function (data) {
-    console.log('on ARCHIVE UPLOAD')
+    console.log('on ARCHIVE DOWNLOAD')
     _update('download', data)
   })
 }
