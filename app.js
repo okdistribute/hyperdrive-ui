@@ -91,29 +91,32 @@ function installDropHandler (archive) {
 }
 
 function attachSpeedometer (archive) {
-  console.log('2 attachSpeedometer()')
   var speed = speedometer(1)
   var $els = {
+    speed: document.getElementById('speed'),
     upload: document.getElementById('upload-speed'),
     download: document.getElementById('download-speed')
   }
-  function _update (direction, data) {
+  var timer;
+  function update (direction, data) {
+    if (!data.length) return
     var bytesPerSecond = speed(data.length)
-    console.log(bytesPerSecond)
-    var pretty = prettyBytes(bytesPerSecond)
-    console.log(pretty)
-    if (pretty && $els[direction]) $els[direction].innerHTML = direction + ' ' + pretty
-  }
-  function _timeout () {
-    // todo
+    if (bytesPerSecond && $els[direction]) {
+      $els.speed.style.display = 'block'
+      $els[direction].innerHTML = direction + ' ' + prettyBytes(bytesPerSecond)
+      window.clearTimeout(timer)
+      timer = window.setTimeout(function() {
+        $els.speed.style.display = 'none'
+        $els.upload.innerHTML = ''
+        $els.download.innerHTML = ''
+      }, 1500)
+    }
   }
   archive.on('upload', function (data) {
-    console.log('on ARCHIVE UPLOAD')
-    _update('upload', data)
+    update('upload', data)
   })
   archive.on('download', function (data) {
-    console.log('on ARCHIVE DOWNLOAD')
-    _update('download', data)
+    update('download', data)
   })
 }
 

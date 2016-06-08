@@ -119,7 +119,7 @@ a:hover, a:focus,
 }
 
 #speed {
-  display: block;
+  display: none;
   float: right;
   line-height: 37px;
   margin: 0 10px 0 0px;
@@ -129,13 +129,9 @@ a:hover, a:focus,
 
 #speed span {
   font-weight: normal;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 37px;
   margin-left: 10px;
-}
-
-#speed span:first-child {
-  margin-left: 0;
 }
 
 .breadcrumbs {
