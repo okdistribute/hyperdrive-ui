@@ -51,7 +51,6 @@ function main (key) {
   var help = document.querySelector('#help-text')
   help.innerHTML = 'looking for sources …'
   $hyperdrive.innerHTML = ''
-
   getArchive(key, function (archive) {
     if (archive.owner) {
       help.innerHTML = 'drag and drop files'
@@ -97,17 +96,21 @@ function attachSpeedometer (archive) {
     upload: document.getElementById('upload-speed'),
     download: document.getElementById('download-speed')
   }
-  function update (direction, data) {
+  function _update (direction, data) {
+    debugger;
     var speed = prettyBytes(speedometer(data.length))
     if (speed && $els[direction]) els[direction].innerHTML = speed
   }
+  function _timeout () {
+    // todo
+  }
   archive.on('upload', function (data) {
     console.log('on ARCHIVE UPLOAD')
-    update('upload', data)
+    _update('upload', data)
   })
   archive.on('download', function (data) {
     console.log('on ARCHIVE UPLOAD')
-    update('download', data)
+    _update('download', data)
   })
 }
 
