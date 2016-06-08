@@ -51,6 +51,7 @@ function main (key) {
   var help = document.querySelector('#help-text')
   help.innerHTML = 'looking for sources …'
   $hyperdrive.innerHTML = ''
+
   getArchive(key, function (archive) {
     if (archive.owner) {
       help.innerHTML = 'drag and drop files'
@@ -82,6 +83,7 @@ function installDropHandler (archive) {
 
     function loop () {
       if (i === files.length) return console.log('added files to ', archive.key.toString('hex'), files)
+
       var file = files[i++]
       var stream = fileReader(file)
       var entry = {name: file.fullPath, mtime: Date.now(), ctime: Date.now()}
