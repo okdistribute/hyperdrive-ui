@@ -23,6 +23,7 @@ if (file) {
     }))
   })
 } else {
+  installDropHandler()
   main(key)
 }
 
@@ -52,8 +53,8 @@ function main (key) {
   getArchive(key, function (archive) {
     if (archive.owner) {
       help.innerHTML = 'drag and drop files'
-      installDropHandler(archive)
     }
+    installDropHandler(archive)
     window.location = '#' + archive.key.toString('hex')
     updateShareLink()
 
@@ -74,17 +75,24 @@ function updateShareLink () {
 var clearDrop
 function installDropHandler (archive) {
   if (clearDrop) clearDrop()
-  clearDrop = drop(document.body, function (files) {
-    var i = 0
-    loop()
 
-    function loop () {
-      if (i === files.length) return console.log('added files to ', archive.key.toString('hex'), files)
+  if (archive && archive.owner) {
+    clearDrop = drop(document.body, function (files) {
+      var i = 0
+      loop()
 
-      var file = files[i++]
-      var stream = fileReader(file)
-      var entry = {name: file.fullPath, mtime: Date.now(), ctime: Date.now()}
-      stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(entry)).on('finish', loop)
-    }
-  })
+      function loop () {
+        if (i === files.length) return console.log('added files to ', archive.key.toString('hex'), files)
+
+        var file = files[i++]
+        var stream = fileReader(file)
+        var entry = {name: file.fullPath, mtime: Date.now(), ctime: Date.now()}
+        stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(entry)).on('finish', loop)
+      }
+    })
+  } else {
+    clearDrop = drop(document.body, function () {
+      alert('You are not the owner of this drive.  Click "Reset" to create a new drive.')
+    })
+  }
 }
