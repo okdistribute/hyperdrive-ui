@@ -22,7 +22,7 @@ html {
 }
 
 body {
-  min-width: 640px;
+  min-width: 990px;
   margin: 0;
   padding 0;
   font-size: 14px;
@@ -76,7 +76,7 @@ a:hover, a:focus,
 .site-header #share-link {
   display: block;
   float: left;
-  width: 50%;
+  width: 40%;
   margin-left: 1rem;
   padding: 6px 14px;
   font-size: 18px;
@@ -116,6 +116,22 @@ a:hover, a:focus,
   padding: 0;
   margin: 0 0 0 20px;
   display: inline-block;
+}
+
+#speed {
+  display: none;
+  float: right;
+  line-height: 37px;
+  margin: 0 10px 0 0px;
+  padding: 0;
+  width: 320px;
+}
+
+#speed span {
+  font-weight: normal;
+  font-size: 13px;
+  line-height: 37px;
+  margin-left: 10px;
 }
 
 .breadcrumbs {

@@ -7,6 +7,8 @@ var choppa = require('choppa')
 var swarm = require('hyperdrive-archive-swarm')
 var db = memdb('./hyperdrive620')
 var drive = hyperdrive(db)
+var speedometer = require('speedometer')
+var prettyBytes = require('pretty-bytes')
 var explorer = require('./')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
@@ -40,6 +42,7 @@ function getArchive (key, cb) {
     updatePeers()
   })
   archive.open(function () { cb(archive) })
+  attachSpeedometer(archive)
 }
 
 function main (key) {
@@ -96,3 +99,34 @@ function installDropHandler (archive) {
     })
   }
 }
+
+function attachSpeedometer (archive) {
+  var speed = speedometer(1)
+  var $els = {
+    speed: document.getElementById('speed'),
+    upload: document.getElementById('upload-speed'),
+    download: document.getElementById('download-speed')
+  }
+  var timer;
+  function update (direction, data) {
+    if (!data.length) return
+    var bytesPerSecond = speed(data.length)
+    if (bytesPerSecond && $els[direction]) {
+      $els.speed.style.display = 'block'
+      $els[direction].innerHTML = direction + ' ' + prettyBytes(bytesPerSecond)
+      window.clearTimeout(timer)
+      timer = window.setTimeout(function() {
+        $els.speed.style.display = 'none'
+        $els.upload.innerHTML = ''
+        $els.download.innerHTML = ''
+      }, 1500)
+    }
+  }
+  archive.on('upload', function (data) {
+    update('upload', data)
+  })
+  archive.on('download', function (data) {
+    update('download', data)
+  })
+}
+
