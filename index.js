@@ -46,7 +46,7 @@ module.exports = function ui (archive, opts, onclick) {
           return archive.createFileReadStream(entry)
         }
       }, display, function (err) {
-        console.log('hello', err)
+        if (err) throw err
       })
     }
     onclick(ev, entry)
