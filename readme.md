@@ -11,7 +11,7 @@ Live demo: [http://karissa.github.io/hyperdrive-ui/](http://karissa.github.io/hy
 
 ```npm install hyperdrive-ui```
 
-## `hyperdriveUI(element, archive, opts, onclick)`
+## `hyperdriveUI(archive, opts, onclick)`
 
 Renders the explorer.
 
