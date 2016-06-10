@@ -9,6 +9,7 @@ var db = memdb('./hyperdrive620')
 var drive = hyperdrive(db)
 var speedometer = require('speedometer')
 var prettyBytes = require('pretty-bytes')
+var path = require('path')
 var explorer = require('./')
 var intro = require('intro.js')
 
@@ -18,6 +19,7 @@ var $shareLink = document.getElementById('share-link')
 var keypath = window.location.hash.substr(1).match('([^\/]+)(/?.*)')
 var key = keypath ? keypath[1] : null
 var file = keypath ? keypath[2] : null
+var cwd = '/'
 
 if (file) {
   getArchive(key, function (archive) {
@@ -82,7 +84,11 @@ function main (key) {
     window.location = '#' + archive.key.toString('hex')
     updateShareLink()
 
-    var widget = explorer(archive)
+    var widget = explorer(archive, function (ev, entry) {
+      if (entry.type === 'directory') {
+        cwd = entry.name
+      }
+    })
     $hyperdrive.appendChild(widget)
     var stream = archive.list({live: true})
     stream.on('data', function (entry) {
@@ -110,7 +116,7 @@ function installDropHandler (archive) {
 
         var file = files[i++]
         var stream = fileReader(file)
-        var entry = {name: file.fullPath, mtime: Date.now(), ctime: Date.now()}
+        var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
         stream.pipe(choppa(16 * 1024)).pipe(archive.createFileWriteStream(entry)).on('finish', loop)
       }
     })
