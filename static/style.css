@@ -151,6 +151,14 @@ a:hover, a:focus,
   cursor: pointer;
 }
 
+#help.button {
+  background-color: #FFFFFF;
+  border: 1px solid #35b44f;
+  color: #35b44f;
+  border-radius: 10px;
+  margin-left: 10px;
+}
+
 .button:hover,
 .button:focus {
   background-color: #A9CE7F;

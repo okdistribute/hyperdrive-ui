@@ -30,6 +30,7 @@
   "dependencies": {
     "concat-stream": "^1.5.1",
     "pretty-bytes": "^3.0.1",
+    "intro.js": "^2.1.0",
     "render-data": "^1.0.0",
     "speedometer": "^1.0.0",
     "yo-fs": "^1.0.3",

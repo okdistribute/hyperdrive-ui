@@ -10,6 +10,7 @@ var drive = hyperdrive(db)
 var speedometer = require('speedometer')
 var prettyBytes = require('pretty-bytes')
 var explorer = require('./')
+var intro = require('intro.js')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -43,6 +44,26 @@ function getArchive (key, cb) {
   })
   archive.open(function () { cb(archive) })
   attachSpeedometer(archive)
+}
+
+document.querySelector('#help').onclick = function () {
+  var introjs = intro.introJs()
+  introjs.setOptions({
+    steps: [
+      {
+        intro: 'You can create a new hyperdrive by clicking <b>Reset</b>'
+      },
+      {
+        intro: 'Drop some files here',
+        element: '#help-text'
+      },
+      {
+        intro: 'You can share the hyperdrive with this link',
+        element: 'input#share-link',
+        position: 'bottom'
+      }
+    ]})
+  introjs.start()
 }
 
 function main (key) {
@@ -129,4 +150,3 @@ function attachSpeedometer (archive) {
     update('download', data)
   })
 }
-
