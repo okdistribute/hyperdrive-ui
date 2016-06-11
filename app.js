@@ -16,7 +16,7 @@ var intro = require('intro.js')
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
-var keypath = window.location.hash.substr(1).match('([^\/]+)(/?.*)')
+var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
 var key = keypath ? keypath[1] : null
 var file = keypath ? keypath[2] : null
 var cwd = '/'
@@ -34,7 +34,7 @@ if (file) {
 
 var peers = 0
 function updatePeers () {
-  document.querySelector('#peers').innerHTML = peers + " source" + (peers > 1 ? 's' : '')
+  document.querySelector('#peers').innerHTML = peers + ' source' + (peers > 1 ? 's' : '')
 }
 
 function getArchive (key, cb) {
@@ -122,7 +122,7 @@ function installDropHandler (archive) {
     })
   } else {
     clearDrop = drop(document.body, function () {
-      alert('You are not the owner of this drive.  Click "Reset" to create a new drive.')
+      window.alert('You are not the owner of this drive.  Click "Reset" to create a new drive.')
     })
   }
 }
@@ -134,7 +134,7 @@ function attachSpeedometer (archive) {
     upload: document.getElementById('upload-speed'),
     download: document.getElementById('download-speed')
   }
-  var timer;
+  var timer
   function update (direction, data) {
     if (!data.length) return
     var bytesPerSecond = speed(data.length)
@@ -142,7 +142,7 @@ function attachSpeedometer (archive) {
       $els.speed.style.display = 'block'
       $els[direction].innerHTML = direction + ' ' + prettyBytes(bytesPerSecond)
       window.clearTimeout(timer)
-      timer = window.setTimeout(function() {
+      timer = window.setTimeout(function () {
         $els.speed.style.display = 'none'
         $els.upload.innerHTML = ''
         $els.download.innerHTML = ''

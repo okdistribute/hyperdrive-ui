@@ -7,7 +7,9 @@
     "build": "browserify app.js > bundle.js",
     "watch": "watchify app.js -o bundle.js",
     "start": "npm run watch & http-server .",
-    "deploy": "gh-pages-deploy"
+    "deploy": "gh-pages-deploy",
+    "test": "standard",
+    "lint": "standard"
   },
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
@@ -23,7 +25,7 @@
     "hyperdrive-archive-swarm": "^1.1.2",
     "level-browserify": "^1.1.0",
     "memdb": "^1.3.1",
-    "standard": "^3.0.0",
+    "standard": "^7.1.2",
     "watchify": "~3.6.0",
     "wzrd": "^1.3.1"
   },

@@ -12,14 +12,15 @@ module.exports = function ui (archive, opts, onclick) {
   var dirs = {}
 
   var fs = yofs(null, root, entries, clickEntry)
-  var display_id = 'display'
-  var display = yo`<div id="${display_id}"></div>`
+  var displayId = 'display'
+  var display = yo`<div id="${displayId}"></div>`
 
   var widget = yo`<div id="hyperdrive-ui">
     ${fs}
     ${display}
   </div>`
 
+/*
   function page (newRoot) {
     root = newRoot
     yofs(fs, newRoot, entries, clickEntry)
@@ -33,11 +34,11 @@ module.exports = function ui (archive, opts, onclick) {
     if (parts.length) crumbs = yo`<button class="link" onclick=${back}>back</button>`
     return yo`<div id="breadcrumbs" class="breadcrumbs"> ${crumbs} </div>`
   }
-
+*/
   function clickEntry (ev, entry) {
     root = entry.name
     if (entry.type === 'directory') {
-      document.getElementById(display_id).innerHTML = ''
+      document.getElementById(displayId).innerHTML = ''
     }
     if (entry.type === 'file') {
       data.render({
