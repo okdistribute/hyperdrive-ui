@@ -35,7 +35,7 @@
     "intro.js": "^2.1.0",
     "render-data": "^1.0.0",
     "speedometer": "^1.0.0",
-    "yo-fs": "^1.0.3",
+    "yo-fs": "^2.0.0",
     "yo-yo": "^1.2.1"
   },
   "gh-pages-deploy": {
