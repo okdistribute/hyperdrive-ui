@@ -10,10 +10,17 @@ module.exports = function ui (archive, opts, onclick) {
   var dirs = {}
   var entries = []
 
-  var tree = yofs('/', entries, onclick)
+  function clicky (ev, entry) {
+    if (entry.type === 'directory') {
+      root = entry.name
+    }
+    onclick(ev, entry)
+  }
+
+  var tree = yofs(root, entries, clicky)
 
   function update () {
-    var fresh = tree.render('/', entries, onclick)
+    var fresh = tree.render(root, entries, clicky)
     yo.update(tree.widget, fresh)
   }
 
