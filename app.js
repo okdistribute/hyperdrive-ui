@@ -12,6 +12,7 @@ var prettyBytes = require('pretty-bytes')
 var path = require('path')
 var explorer = require('./')
 var intro = require('intro.js')
+var yo = require('yo-yo')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -86,16 +87,28 @@ function main (key) {
     window.location = '#' + archive.key.toString('hex')
     updateShareLink()
 
-    var widget = explorer(archive, function (ev, entry) {
-      if (entry.type === 'directory') {
-        cwd = entry.name
-      }
-    })
+    var entries = []
+    var widget
+
+    function update () {
+      var fresh = explorer(archive, entries, function (ev, entry) {
+        if (entry.type === 'directory') {
+          cwd = entry.name
+        }
+      })
+      if (widget) widget = yo.update(widget, fresh)
+      else widget = fresh
+    }
+
+    update()
     $hyperdrive.appendChild(widget)
+
     var stream = archive.list({live: true})
     stream.on('data', function (entry) {
       if (archive.owner) help.innerHTML = 'drag and drop files'
       else help.innerHTML = ''
+      entries.push(entry)
+      update()
     })
   })
 }

@@ -3,13 +3,24 @@ var yo = require('yo-yo')
 var data = require('render-data')
 var yofs = require('yo-fs')
 
-module.exports = function ui (archive, opts, onclick) {
-  if (!onclick) return ui(archive, opts, function thunk () {})
-  if ((typeof opts) === 'function') return ui(archive, {}, opts)
+module.exports = function ui (archive, entries, opts, onclick) {
+  if (!onclick) return ui(archive, entries, opts, function thunk () {})
+  if ((typeof opts) === 'function') return ui(archive, entries, {}, opts)
   if (!opts) opts = {}
   var root = opts.root || '/'
-  var entries = []
   var dirs = {}
+
+  entries.forEach(function (entry) {
+    var dir = path.dirname(entry.name)
+    if (!dirs[dir]) {
+      entries.push({
+        type: 'directory',
+        name: dir,
+        length: 0
+      })
+      dirs[dir] = true
+    }
+  })
 
   var fs = yofs(null, root, entries, clickEntry)
   var displayId = 'display'
@@ -53,19 +64,5 @@ module.exports = function ui (archive, opts, onclick) {
     onclick(ev, entry)
   }
 
-  var stream = archive.list({live: true})
-  stream.on('data', function (entry) {
-    entries.push(entry)
-    var dir = path.dirname(entry.name)
-    if (!dirs[dir]) {
-      entries.push({
-        type: 'directory',
-        name: dir,
-        length: 0
-      })
-      dirs[dir] = true
-    }
-    yofs(fs, root, entries, clickEntry)
-  })
   return widget
 }
