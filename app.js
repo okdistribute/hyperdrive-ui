@@ -32,17 +32,19 @@ if (file) {
   main(key)
 }
 
-var peers = 0
-function updatePeers () {
-  document.querySelector('#peers').innerHTML = peers + ' source' + (peers > 1 ? 's' : '')
+function updatePeers (peers) {
+  if (!peers) peers = 0
+  document.querySelector('#peers').innerHTML = peers + ' source' + (peers > 1 || peers === 0 ? 's' : '')
 }
 
 function getArchive (key, cb) {
   var archive = drive.createArchive(key, {live: true})
   var sw = swarm(archive)
-  sw.on('peer', function (peer) {
-    peers++
-    updatePeers()
+  sw.on('connection', function (peer) {
+    updatePeers(sw.connections)
+    peer.on('close', function () {
+      updatePeers(sw.connections)
+    })
   })
   archive.open(function () { cb(archive) })
   attachSpeedometer(archive)
