@@ -11,7 +11,6 @@ var speedometer = require('speedometer')
 var prettyBytes = require('pretty-bytes')
 var path = require('path')
 var intro = require('intro.js')
-var yo = require('yo-yo')
 var explorer = require('./')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')

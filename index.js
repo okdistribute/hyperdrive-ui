@@ -26,8 +26,6 @@ module.exports = function ui (archive, opts, onclick) {
 
   var stream = archive.list({live: true})
   stream.on('data', function (entry) {
-    if (archive.owner) help.innerHTML = 'drag and drop files'
-    else help.innerHTML = ''
     entry.createReadStream = function () {
       return archive.createFileReadStream(entry)
     }
