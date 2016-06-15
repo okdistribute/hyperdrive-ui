@@ -1,6 +1,5 @@
 var path = require('path')
 var yo = require('yo-yo')
-var data = require('render-data')
 var yofs = require('yo-fs')
 
 module.exports = function ui (archive, opts, onclick) {
@@ -8,53 +7,28 @@ module.exports = function ui (archive, opts, onclick) {
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
   var root = opts.root || '/'
-  var entries = []
   var dirs = {}
+  var entries = []
 
-  var fs = yofs(null, root, entries, clickEntry)
-  var displayId = 'display'
-  var display = yo`<div id="${displayId}"></div>`
-
-  var widget = yo`<div id="hyperdrive-ui">
-    ${fs}
-    ${display}
-  </div>`
-
-/*
-  function page (newRoot) {
-    root = newRoot
-    yofs(fs, newRoot, entries, clickEntry)
-  }
-
-  function breadcrumbs (root) {
-    var parts = root.split('/')
-    while (parts[parts.length - 1] === '') { parts.pop() }
-    function back () { page(path.dirname(root)) }
-    var crumbs
-    if (parts.length) crumbs = yo`<button class="link" onclick=${back}>back</button>`
-    return yo`<div id="breadcrumbs" class="breadcrumbs"> ${crumbs} </div>`
-  }
-*/
-  function clickEntry (ev, entry) {
-    root = entry.name
+  function clicky (ev, entry) {
     if (entry.type === 'directory') {
-      document.getElementById(displayId).innerHTML = ''
-    }
-    if (entry.type === 'file') {
-      data.render({
-        name: entry.name,
-        createReadStream: function () {
-          return archive.createFileReadStream(entry)
-        }
-      }, display, function (err) {
-        if (err) throw err
-      })
+      root = entry.name
     }
     onclick(ev, entry)
   }
 
+  var tree = yofs(root, entries, clicky)
+
+  function update () {
+    var fresh = tree.render(root, entries, clicky)
+    yo.update(tree.widget, fresh)
+  }
+
   var stream = archive.list({live: true})
   stream.on('data', function (entry) {
+    entry.createReadStream = function () {
+      return archive.createFileReadStream(entry)
+    }
     entries.push(entry)
     var dir = path.dirname(entry.name)
     if (!dirs[dir]) {
@@ -65,7 +39,7 @@ module.exports = function ui (archive, opts, onclick) {
       })
       dirs[dir] = true
     }
-    yofs(fs, root, entries, clickEntry)
+    update()
   })
-  return widget
+  return tree.widget
 }

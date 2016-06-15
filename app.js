@@ -10,8 +10,8 @@ var drive = hyperdrive(db)
 var speedometer = require('speedometer')
 var prettyBytes = require('pretty-bytes')
 var path = require('path')
-var explorer = require('./')
 var intro = require('intro.js')
+var explorer = require('./')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -86,17 +86,13 @@ function main (key) {
     window.location = '#' + archive.key.toString('hex')
     updateShareLink()
 
-    var widget = explorer(archive, function (ev, entry) {
+    function onclick (ev, entry) {
       if (entry.type === 'directory') {
         cwd = entry.name
       }
-    })
-    $hyperdrive.appendChild(widget)
-    var stream = archive.list({live: true})
-    stream.on('data', function (entry) {
-      if (archive.owner) help.innerHTML = 'drag and drop files'
-      else help.innerHTML = ''
-    })
+    }
+    var tree = explorer(archive, onclick)
+    $hyperdrive.appendChild(tree)
   })
 }
 
