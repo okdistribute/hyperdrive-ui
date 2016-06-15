@@ -4,7 +4,7 @@ Explore the contents of a [hyperdrive](http://github.com/mafintosh/hyperdrive) i
 
 ## Example
 
-Live demo: [http://karissa.github.io/hyperdrive-ui/](http://karissa.github.io/hyperdrive-ui/)
+Live demo: [http://dat.land/](http://dat.land/)
 
 
 ## usage
@@ -15,7 +15,15 @@ Live demo: [http://karissa.github.io/hyperdrive-ui/](http://karissa.github.io/hy
 
 Renders the explorer.
 
-See `app.js` for an example.
+```js
+var explorer = require('hyperdrive-ui')
+function onclick (ev, entry) {
+  console.log('clicked', entry.name, entry.type)
+}
+var tree = explorer(archive, onclick)
+document.getElementById('#hyperdrive').appendChild(tree)
+
+```
 
 ## get started
 
