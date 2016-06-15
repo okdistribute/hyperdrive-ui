@@ -21,7 +21,7 @@ function onclick (ev, entry) {
   console.log('clicked', entry.name, entry.type)
 }
 var tree = explorer(archive, onclick)
-document.getElementById('#hyperdrive').appendChild(tree)
+document.querySelector('#hyperdrive').appendChild(tree)
 
 ```
 
