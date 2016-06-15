@@ -12,6 +12,7 @@ var prettyBytes = require('pretty-bytes')
 var path = require('path')
 var explorer = require('./')
 var intro = require('intro.js')
+var components = require('./components')
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
@@ -72,7 +73,10 @@ document.querySelector('#help').onclick = function () {
 
 function main (key) {
   var button = document.querySelector('#new')
-  button.onclick = function () { main(null) }
+  button.onclick = function () {
+    components.hyperdriveSize.reset()
+    main(null)
+  }
 
   var help = document.querySelector('#help-text')
   help.innerHTML = 'looking for sources …'
@@ -97,6 +101,7 @@ function main (key) {
       if (archive.owner) help.innerHTML = 'drag and drop files'
       else help.innerHTML = ''
     })
+    components.hyperdriveSize.init(archive, 'hyperdrive-size')
   })
 }
 
@@ -114,8 +119,10 @@ function installDropHandler (archive) {
       loop()
 
       function loop () {
-        if (i === files.length) return console.log('added files to ', archive.key.toString('hex'), files)
-
+        if (i === files.length) {
+          components.hyperdriveSize.update(archive)
+          return console.log('added files to ', archive.key.toString('hex'), files)
+        }
         var file = files[i++]
         var stream = fileReader(file)
         var entry = {name: path.join(cwd, file.fullPath), mtime: Date.now(), ctime: Date.now()}
