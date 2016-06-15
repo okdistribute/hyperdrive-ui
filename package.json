@@ -19,5 +19,8 @@
   },
   "bugs": {
     "url": "https://github.com/karissa/hyperdrive-ui/issues"
+  },
+  "devDependencies": {
+    "standard": "^7.1.2"
   }
 }
