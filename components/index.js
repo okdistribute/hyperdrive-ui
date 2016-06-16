@@ -1,3 +1,4 @@
 module.exports = {
-  hyperdriveSize: require('./hyperdrive-size')
+  hyperdriveSize: require('./hyperdrive-size'),
+  resetButton: require('./reset-button')
 }

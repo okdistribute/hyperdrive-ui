@@ -12,13 +12,14 @@ var prettyBytes = require('pretty-bytes')
 var path = require('path')
 var intro = require('intro.js')
 
+var $hyperdrive = document.querySelector('#hyperdrive-ui')
+var $shareLink = document.getElementById('share-link')
+
 var explorer = require('./')
 var store = require('./store')
 var components = require('./components')
 components.hyperdriveSize('hyperdrive-size', store)
-
-var $hyperdrive = document.querySelector('#hyperdrive-ui')
-var $shareLink = document.getElementById('share-link')
+components.resetButton('new', main)
 
 var keypath = window.location.hash.substr(1).match('([^/]+)(/?.*)')
 var key = keypath ? keypath[1] : null
@@ -75,11 +76,6 @@ document.querySelector('#help').onclick = function () {
 }
 
 function main (key) {
-  var button = document.querySelector('#new')
-  button.onclick = function () {
-    main(null)
-  }
-
   var help = document.querySelector('#help-text')
   help.innerHTML = 'looking for sources …'
   $hyperdrive.innerHTML = ''
@@ -104,10 +100,7 @@ function main (key) {
       else help.innerHTML = ''
     })
 
-    // update the minidux store.archive state:
     store.dispatch({ type: 'initArchive', archive: archive })
-
-
   })
 }
 
