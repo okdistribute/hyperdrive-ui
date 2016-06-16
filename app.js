@@ -131,7 +131,6 @@ function main (key) {
     })
 
     // update the minidux store.archive state:
-    console.log('call store.dispatch() action type: `initArchive`')
     store.dispatch({ type: 'initArchive', archive: archive })
 
 

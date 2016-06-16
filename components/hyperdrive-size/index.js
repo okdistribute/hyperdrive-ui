@@ -6,28 +6,27 @@ module.exports = HDSize
 function HDSize (el, store) {
   if (!(this instanceof HDSize)) return new HDSize(el, store)
   var self = this
+  this.component = this.render()
   this.$el = document.getElementById(el)
-  if (this.$el) {
-    console.log('size component appendChild()')
-    this.$el.appendChild(this.render())
-  }
-  // WIKKID awesome, state subscription is the power of minidux+yo:
   this.store = store
+
+  if (this.$el) {
+    this.$el.appendChild(this.component)
+  }
+  // -> WIKKID awesome, state subscription is the power of minidux+yo!:
   this.store.subscribe(function (state) {
-    console.log('hd size component subscriber triggers update()')
     self.update()
   })
 }
 
 HDSize.prototype.render = function () {
-  console.log('hd size component render()')
   var size = this._getSize()
-  return yo`<p id="size">Drive size: ${size}</p>`
+  var component = yo`<p id="size">Drive size: ${size}</p>`
+  return component
 }
 
 HDSize.prototype.update = function () {
-  console.log('hd size component update()')
-  yo.update(this.$el, this.render())
+  yo.update(this.component, this.render())
 }
 
 HDSize.prototype._getSize = function () {
@@ -38,6 +37,5 @@ HDSize.prototype._getSize = function () {
       bytes = s.archive.content.bytes
     }
   }
-  console.log('_getSize: ' + prettyBytes(bytes))
   return prettyBytes(bytes)
 }
