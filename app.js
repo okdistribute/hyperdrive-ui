@@ -10,37 +10,12 @@ var drive = hyperdrive(db)
 var speedometer = require('speedometer')
 var prettyBytes = require('pretty-bytes')
 var path = require('path')
-var explorer = require('./')
 var intro = require('intro.js')
+
+var explorer = require('./')
+var store = require('./store')
 var components = require('./components')
-
-
-
-
-
-/* minidux experiment -------------- */
-var createStore = require('minidux').createStore
-var store = createStore(reducer, {
-  archive: null
-});
-
-// reducer: similar to an append-only log for the front end state
-// http://redux.js.org/docs/Glossary.html#reducer
-function reducer (state, action) {
-  if (action.type === 'initArchive' || action.type === 'updateArchive') {
-    return { archive: action.archive }
-  }
-}
-
-/* init component(s) ---------------- */
-// WIN: all components can be initalized with same function signature
-// if we use minidux store:
 components.hyperdriveSize('hyperdrive-size', store)
-
-
-
-
-
 
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')

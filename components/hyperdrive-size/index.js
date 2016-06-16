@@ -6,14 +6,14 @@ module.exports = HDSize
 function HDSize (el, store) {
   if (!(this instanceof HDSize)) return new HDSize(el, store)
   var self = this
-  this.component = this.render()
   this.$el = document.getElementById(el)
   this.store = store
 
   if (this.$el) {
+    this.component = this.render()
     this.$el.appendChild(this.component)
   }
-  // -> WIKKID awesome, state subscription is the power of minidux+yo!:
+
   this.store.subscribe(function (state) {
     self.update()
   })
