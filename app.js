@@ -77,7 +77,6 @@ document.querySelector('#help').onclick = function () {
 function main (key) {
   var button = document.querySelector('#new')
   button.onclick = function () {
-    // components.hyperdriveSize.reset()
     main(null)
   }
 
@@ -127,18 +126,7 @@ function installDropHandler (archive) {
 
       function loop () {
         if (i === files.length) {
-
-
-
-          // instead of manually updating all of the various components that
-          // will need updating after adding a file, we just make one call to
-          // update the application `store`. the components that are subscribed
-          // auto-recieve the change:
           store.dispatch({ type: 'updateArchive', archive: archive })
-          // components.hyperdriveSize.update(archive) // deprecated
-
-
-
           return console.log('added files to ', archive.key.toString('hex'), files)
         }
         var file = files[i++]
