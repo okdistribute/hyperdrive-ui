@@ -1,42 +1,33 @@
-var prettyBytes = require('pretty-bytes')
 var yo = require('yo-yo')
+var prettyBytes = require('pretty-bytes')
 
-module.exports = {
-  init: init,
-  update: update,
-  reset: reset
+module.exports = HDSize
+
+function HDSize (elId, archive) { // TODO: minidux + state instead of archive!
+  if (!(this instanceof HDSize)) return new HDSize(elId, archive)
+  this.$el = document.getElementById(elId)
+  this.archive = archive
+  if ($el) this.render(_getSize(this.archive))
+  return this
 }
 
-var $parentEl
-var didInit = false
-
-function init (archive, elParentId) {
-  if (didInit) return
-  $parentEl = document.getElementById(elParentId)
-  var size = getSize(archive)
-  if ($parentEl) {
-    $parentEl.appendChild(render(size))
-  }
-  didInit = true
-}
-
-function update (archive) {
-  var size = getSize(archive)
-  yo.update($parentEl, render(size))
-}
-
-function render (size) {
+HDSize.prototype.render = function () {
+  var size = _getSize(this.archive)
   return yo`<p id="size">Drive size: ${size}</p>`
 }
 
-function getSize (archive) {
+HDSize.prototype.update = function () {
+  yo.update(this.$el, this.render( _getSize(this.archive)))
+}
+
+HDSize.prototype.reset = function () {
+  return yo.update(this.$el, this.render( _getSize(this.archive) ))
+}
+
+function _getSize (archive) {
   var bytes = 0
   if (archive && archive.content && archive.content.bytes) {
     bytes = archive.content.bytes
   }
   return prettyBytes(bytes)
-}
-
-function reset () {
-  yo.update($parentEl, render(0))
 }
