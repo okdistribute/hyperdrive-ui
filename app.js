@@ -14,6 +14,34 @@ var explorer = require('./')
 var intro = require('intro.js')
 var components = require('./components')
 
+
+
+
+
+/* minidux experiment -------------- */
+var createStore = require('minidux').createStore
+var store = createStore(reducer, {
+  archive: null
+});
+
+// reducer: similar to an append-only log for the front end state
+// http://redux.js.org/docs/Glossary.html#reducer
+function reducer (state, action) {
+  if (action.type === 'initArchive' || action.type === 'updateArchive') {
+    return { archive: action.archive }
+  }
+}
+
+/* init component(s) ---------------- */
+// WIN: all components can be initalized with same function signature
+// if we use minidux store:
+components.hyperdriveSize('hyperdrive-size', store)
+
+
+
+
+
+
 var $hyperdrive = document.querySelector('#hyperdrive-ui')
 var $shareLink = document.getElementById('share-link')
 
@@ -74,7 +102,7 @@ document.querySelector('#help').onclick = function () {
 function main (key) {
   var button = document.querySelector('#new')
   button.onclick = function () {
-    components.hyperdriveSize.reset()
+    // components.hyperdriveSize.reset()
     main(null)
   }
 
@@ -101,7 +129,12 @@ function main (key) {
       if (archive.owner) help.innerHTML = 'drag and drop files'
       else help.innerHTML = ''
     })
-    components.hyperdriveSize.init(archive, 'hyperdrive-size')
+
+    // update the minidux store.archive state:
+    console.log('call store.dispatch() action type: `initArchive`')
+    store.dispatch({ type: 'initArchive', archive: archive })
+
+
   })
 }
 
@@ -120,7 +153,18 @@ function installDropHandler (archive) {
 
       function loop () {
         if (i === files.length) {
-          components.hyperdriveSize.update(archive)
+
+
+
+          // instead of manually updating all of the various components that
+          // will need updating after adding a file, we just make one call to
+          // update the application `store`. the components that are subscribed
+          // auto-recieve the change:
+          store.dispatch({ type: 'updateArchive', archive: archive })
+          // components.hyperdriveSize.update(archive) // deprecated
+
+
+
           return console.log('added files to ', archive.key.toString('hex'), files)
         }
         var file = files[i++]
