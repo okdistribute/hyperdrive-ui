@@ -7,8 +7,7 @@ module.exports = function ui (archive, opts, onclick) {
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
   var root = opts.root || '/'
-  var dirs = {}
-  var entries = []
+  var entries = {}
 
   function clicky (ev, entry) {
     if (entry.type === 'directory') {
@@ -17,10 +16,18 @@ module.exports = function ui (archive, opts, onclick) {
     onclick(ev, entry)
   }
 
-  var tree = yofs(root, entries, clicky)
+  var tree = yofs(root, [], clicky)
 
   function update () {
-    var fresh = tree.render(root, entries, clicky)
+    // super inefficient. yo-fs should probably have a .add(entry)
+    // function instead of recomputing the entry list every time
+    var vals = []
+    for (var key in entries) {
+      if (entries.hasOwnProperty(key)) {
+        vals.push(entries[key])
+      }
+    }
+    var fresh = tree.render(root, vals, clicky)
     yo.update(tree.widget, fresh)
   }
 
@@ -29,15 +36,14 @@ module.exports = function ui (archive, opts, onclick) {
     entry.createReadStream = function () {
       return archive.createFileReadStream(entry)
     }
-    entries.push(entry)
+    entries[entry.name] = entry
     var dir = path.dirname(entry.name)
-    if (!dirs[dir]) {
-      entries.push({
+    if (!entries[dir]) {
+      entries[dir] = {
         type: 'directory',
         name: dir,
         length: 0
-      })
-      dirs[dir] = true
+      }
     }
     update()
   })
