@@ -6,7 +6,7 @@ module.exports = function ui (archive, opts, onclick) {
   if (!onclick) return ui(archive, opts, function thunk () {})
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
-  var root = opts.root || '/'
+  var root = opts.root || ''
   var entries = {}
 
   function clicky (ev, entry) {
