@@ -16,9 +16,9 @@ module.exports = function ui (archive, opts, onclick) {
     onclick(ev, entry)
   }
 
-  var tree = yofs(root, [], clicky)
+  var tree = yofs(root, getEntries(), clicky)
 
-  function update () {
+  function getEntries () {
     // super inefficient. yo-fs should probably have a .add(entry)
     // function instead of recomputing the entry list every time
     var vals = []
@@ -27,7 +27,11 @@ module.exports = function ui (archive, opts, onclick) {
         vals.push(entries[key])
       }
     }
-    var fresh = tree.render(root, vals, clicky)
+    return vals
+  }
+
+  function update () {
+    var fresh = tree.render(root, getEntries(), clicky)
     yo.update(tree.widget, fresh)
   }
 
