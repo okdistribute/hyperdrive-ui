@@ -7,7 +7,7 @@ module.exports = function ui (archive, opts, onclick) {
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
   var root = opts.root || ''
-  var entries = {}
+  var entries = opts.entries || {}
 
   function clicky (ev, entry) {
     if (entry.type === 'directory') {
