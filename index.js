@@ -13,7 +13,7 @@ module.exports = function ui (archive, opts, onclick) {
     if (entry.type === 'directory') {
       root = entry.name
     }
-    onclick(ev, entry)
+    return onclick(ev, entry)
   }
 
   var tree = yofs(root, getEntries(), clicky)
