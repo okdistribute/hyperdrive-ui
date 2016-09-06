@@ -10,7 +10,7 @@
   "author": "Karissa McKelvey <karissa@karissamck.com> (http://karissamck.com/)",
   "license": "MIT",
   "dependencies": {
-    "yo-fs": "^2.0.6",
+    "yo-fs": "^3.0.0",
     "yo-yo": "^1.2.1"
   },
   "repository": {
