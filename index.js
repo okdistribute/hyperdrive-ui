@@ -7,18 +7,15 @@ module.exports = function ui (archive, opts, onclick) {
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
   var root = opts.root || ''
-  var entries = {}
-  if (Array.isArray(opts.entries)) {
-    for (var i in opts.entries) {
-      addEntry(opts.entries[i])
-    }
-  }
+  var entries = opts.entries || []
+  var uniques = {}
+  opts.entries.forEach(addEntry)
 
   function addEntry (entry) {
-    entries[entry.name] = entry
+    uniques[entry.name] = entry
     var dir = path.dirname(entry.name)
-    if (!entries[dir]) {
-      entries[dir] = {
+    if (!uniques[dir]) {
+      uniques[dir] = {
         type: 'directory',
         name: dir,
         length: 0
@@ -39,9 +36,9 @@ module.exports = function ui (archive, opts, onclick) {
     // super inefficient. yo-fs should probably have a .add(entry)
     // function instead of recomputing the entry list every time
     var vals = []
-    for (var key in entries) {
-      if (entries.hasOwnProperty(key)) {
-        vals.push(entries[key])
+    for (var key in uniques) {
+      if (uniques.hasOwnProperty(key)) {
+        vals.push(uniques[key])
       }
     }
     return vals
@@ -56,7 +53,6 @@ module.exports = function ui (archive, opts, onclick) {
     var stream = archive.list({live: true})
     stream.on('data', function (entry) {
       addEntry(entry)
-
       update()
     })
   }
