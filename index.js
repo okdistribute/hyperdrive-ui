@@ -7,7 +7,24 @@ module.exports = function ui (archive, opts, onclick) {
   if ((typeof opts) === 'function') return ui(archive, {}, opts)
   if (!opts) opts = {}
   var root = opts.root || ''
-  var entries = opts.entries || {}
+  var entries = {}
+  if (Array.isArray(opts.entries)) {
+    for (var i in opts.entries) {
+      addEntry(opts.entries[i])
+    }
+  }
+
+  function addEntry (entry) {
+    entries[entry.name] = entry
+    var dir = path.dirname(entry.name)
+    if (!entries[dir]) {
+      entries[dir] = {
+        type: 'directory',
+        name: dir,
+        length: 0
+      }
+    }
+  }
 
   function clicky (ev, entry) {
     if (entry.type === 'directory') {
@@ -38,15 +55,8 @@ module.exports = function ui (archive, opts, onclick) {
   if (archive) {
     var stream = archive.list({live: true})
     stream.on('data', function (entry) {
-      entries[entry.name] = entry
-      var dir = path.dirname(entry.name)
-      if (!entries[dir]) {
-        entries[dir] = {
-          type: 'directory',
-          name: dir,
-          length: 0
-        }
-      }
+      addEntry(entry)
+
       update()
     })
   }
